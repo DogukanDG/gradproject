@@ -1,7 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Models\Listing;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +15,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//This for returning all listings from the Listing model that we created
 Route::get('/', function () {
-    return view('welcome');
+    return view('listings', [
+        'heading' => 'Latest Listings',
+        'listings' => Listing::all()
+    ]); //the name of the view that we want to return
 });
+
+//Single Listing with specified id
+//all() and find() both is a valid method
+
+Route::get('/listing/{id}', function ($id) {
+    return view('listing', [
+        'listing' => Listing::find($id)
+    ]); //the name of the view that we want to return
+});
+
+
+//this is for doing a search like (.../search?name=Brad&city=Boston) Request and Query Parameters
+// Route::get('/search',function(Request $request){
+//     return ($request->name.' '.$request->city);
+// });
