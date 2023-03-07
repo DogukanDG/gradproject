@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Http\Controllers\ListingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Listing;
@@ -16,21 +16,24 @@ use App\Models\Listing;
 */
 
 //This for returning all listings from the Listing model that we created
-Route::get('/', function () {
-    return view('listings', [
-        'heading' => 'Latest Listings',
-        'listings' => Listing::all()
-    ]); //the name of the view that we want to return
-});
+Route::get('/',[ListingController::class,'index']);
 
 //Single Listing with specified id
 //all() and find() both is a valid method
 
-Route::get('/listing/{id}', function ($id) {
-    return view('listing', [
-        'listing' => Listing::find($id)
-    ]); //the name of the view that we want to return
-});
+Route::get('/listing/{id}',[ListingController::class,'show']);
+
+
+//Common Resources Routes:
+//index-Show all listings
+//show- Show single listing
+//create-Show form to create new listing
+//store-Store new listing
+//edit-Show form to edit listing
+//update-update listing
+//destroy - Delete listing
+
+
 
 
 //this is for doing a search like (.../search?name=Brad&city=Boston) Request and Query Parameters
