@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Listing;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Symfony\Component\HttpFoundation\Session\Session;
+
 
 
 
@@ -16,7 +18,7 @@ class ListingController extends Controller
     public function index(){
         return view('listings.index', [
         
-            'listings' => Listing::latest() -> filter(request(['tag','search'])) -> get()
+            'listings' => Listing::latest() -> filter(request(['tag','search'])) -> simplepaginate(6)
         ]); //the name of the view that we want to return
     }
 
@@ -51,6 +53,6 @@ class ListingController extends Controller
             'description' => 'required'
         ]);
         Listing::create($formFields);
-        return redirect('/');
+        return redirect('/')->with('message','Listing Created');
     }
 }
