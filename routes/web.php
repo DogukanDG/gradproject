@@ -18,10 +18,31 @@ use App\Models\Listing;
 //This for returning all listings from the Listing model that we created
 Route::get('/',[ListingController::class,'index']);
 
+
+
+
+//Show Create Form
+
+Route::get('/listings/create',[ListingController::class,'create']);
+
+
+
+//Store Listing Data
+Route::post('/listings',[ListingController::class,'store']);
+
+
+
+
+
+
+
+
+
+
 //Single Listing with specified id
 //all() and find() both is a valid method
-
-Route::get('/listing/{id}',[ListingController::class,'show']);
+//Show single form this has to be at the end of the page or its causes a bug 
+Route::get('/listings/{id}',[ListingController::class,'show']);
 
 
 //Common Resources Routes:
@@ -32,6 +53,7 @@ Route::get('/listing/{id}',[ListingController::class,'show']);
 //edit-Show form to edit listing
 //update-update listing
 //destroy - Delete listing
+
 
 
 
