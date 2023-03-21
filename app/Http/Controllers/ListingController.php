@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use id;
+use auth;
 use App\Models\Listing;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Session\Session;
-
+use App\Models\User;
 
 
 
 
 class ListingController extends Controller
 {
-    //Show all listings
+    //Show all listings;
 
     public function index(){
         return view('listings.index', [
@@ -57,7 +59,8 @@ class ListingController extends Controller
             $formFields['logo'] = $request ->file('logo')->store('logos','public');
         }
 
-
+        $formFields['user_id'] = auth()->id();
+        
         
         Listing::create($formFields);
         return redirect('/')->with('message','Listing Created');
@@ -69,9 +72,12 @@ class ListingController extends Controller
     }
     
     public function update(Request $request,Listing $listing){
+        // if($listing->user_id != auth()->id()){
+        //     abort(403,'Unauthorized Action');
+        // }
         
         $formFields = $request->validate([
-            'title' => 'required',
+            'title' => 'required',        
             'company' => ['required'],
             'location' => 'required',
             'website' => 'required',
@@ -79,9 +85,11 @@ class ListingController extends Controller
             'tags' => 'required',
             'description' => 'required'
         ]);
+        
         if($request->hasFile('logo')){
             $formFields['logo'] = $request ->file('logo')->store('logos','public');
         }
+
         
         $listing->update($formFields);
         
@@ -90,8 +98,17 @@ class ListingController extends Controller
 
         //Delete Listing
         public function delete(Listing $listing){
+            // if($listing->user_id != auth()->id()){
+            //     abort(403,'Unauthorized Action');
+            // }
             $listing->delete();
             return redirect('')->with('message','Listing Deleted Successfully');
             
         }
+        //Manage listings
+        public function manage(){
+            return view('listings.manage', ['listings'=>auth()
+            ->user()->listings()->get()]);
+        }
+       
 }

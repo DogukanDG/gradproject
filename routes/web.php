@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\ListingController;
+use App\Models\Listing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Models\Listing;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ListingController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,33 +24,48 @@ Route::get('/',[ListingController::class,'index']);
 
 //Show Create Form
 
-Route::get('/listings/create',[ListingController::class,'create']);
+Route::get('/listings/create',[ListingController::class,'create'])->middleware('auth');
 
 //Show Edit Form
-Route::get('/listings/{listing}/edit',[ListingController::class,'edit']);
+Route::get('/listings/{listing}/edit',[ListingController::class,'edit'])->middleware('auth');
 
 //Edit submit to update listing
-Route::put('/listings/{listing}',[ListingController::class,'update']);
+Route::put('/listings/{listing}',[ListingController::class,'update'])->middleware('auth');
 
 //Edit submit to update listing
-Route::delete('/listings/{listing}',[ListingController::class,'delete']);
+Route::delete('/listings/{listing}',[ListingController::class,'delete'])->middleware('auth');
 
 //Store Listing Data
 Route::post('/listings',[ListingController::class,'store']);
 
-
-
-
-
-
-
-
+//Person listings page
+Route::get('/listings/manage', [ListingController::class, 'manage'])->middleware('auth');
 
 
 //Single Listing with specified id
 //all() and find() both is a valid method
 //Show single form this has to be at the end of the page or its causes a bug 
 Route::get('/listings/{id}',[ListingController::class,'show']);
+
+
+
+//Show User Registration Page
+Route::get('/register', [UserController::class,'create'])->middleware('guest');
+
+Route::post('/users',[UserController::class,'store']);
+
+
+//Loging out
+Route::post('/logout',[UserController::class,'logout'])->middleware('auth');
+
+//Login Page
+Route::get('/login',[UserController::class,'login'])->name('login')->middleware('guest');
+
+//Log in
+Route::post('/users/authenticate',[UserController::class,'authenticate']);
+
+
+
 
 
 //Common Resources Routes:

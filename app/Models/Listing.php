@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -20,5 +21,9 @@ class Listing extends Model
             orWhere('description','like', '%'.request('search').'%')->
             orWhere('tags','like', '%'.request('search').'%');
         }
+        
     }
+    public function user(){
+        return $this->belongsTo(User::class,'user_id');
+    }    
 }
