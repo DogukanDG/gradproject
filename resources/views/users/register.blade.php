@@ -22,7 +22,13 @@
                              <p class='text-red-500 text-xs mt-0.5'>{{ $message }}</p>
                          @enderror
                      </div>
-
+                     <div class="mb-6">
+                         <label class="inline-block text-lg mb-2" for="role">Select your role:</label>
+                         <select class="form-control" id="role">
+                             <option value="job-seeker">Job seeker</option>
+                             <option value="employer">Employer</option>
+                         </select>
+                     </div>
                      <div class="mb-6">
                          <label for="email" class="inline-block text-lg mb-2">Email</label>
                          <input value="{{ old('email') }}" type="email"
