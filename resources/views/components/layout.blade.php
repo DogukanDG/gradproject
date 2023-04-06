@@ -22,7 +22,7 @@
             },
         };
     </script>
-    <title>LaraGigs | Find Laravel Jobs & Projects</title>
+    <title>WorkLink | Find Laravel Jobs & Projects</title>
 </head>
 
 <body class="mb-48">
@@ -30,6 +30,7 @@
         <a href="/"><img class="w-24" src="{{ asset('images/logo.png') }}" alt="" class="logo" /></a>
         <ul class="flex space-x-6 mr-6 text-lg">
             @auth
+                <p>Welcome, {{ auth()->user()->name }}!</p>                                                               
                 <li>
                     <a href="/listings/manage" class="hover:text-laravel"><i class="fa-solid fa-gear"></i>My Listings</a>
                 </li>

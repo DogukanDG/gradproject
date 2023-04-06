@@ -12,16 +12,27 @@
                 <form method="POST" action="/listings" enctype="multipart/form-data">
                     @csrf {{-- This is for preventing people from submiting a form from their website to yours --}}
                     <div class="mb-6">
-                        <label for="company" class="inline-block text-lg mb-2">Company Name</label>
-                        <input type="text" class="border border-gray-200 rounded p-2 w-full" name="company"
-                            value="{{ old('company') }}" />
-                        @error('company')
+                        @php
+                            $displayName = 'Company Name';
+                            $displayLocation = 'Job Location';
+                            $displayTitle = 'Job Title';
+                            if (auth()->user()->role == 'job-seeker') {
+                                $displayName = 'Your Name';
+                                $displayLocation = 'Location';
+                                $displayTitle = 'Title';
+                            }
+                            
+                        @endphp
+                        <label for="name" class="inline-block text-lg mb-2">{{ $displayName }}</label>
+                        <input type="text" class="border border-gray-200 rounded p-2 w-full" name="name"
+                            value="{{ old('name') }}" />
+                        @error('name')
                             <p class='text-red-500 text-xs mt-0.5'>{{ $message }}</p>
                         @enderror
                     </div>
 
                     <div class="mb-6">
-                        <label for="title" class="inline-block text-lg mb-2">Job Title</label>
+                        <label for="title" class="inline-block text-lg mb-2">{{ $displayTitle }}</label>
                         <input type="text" class="border border-gray-200 rounded p-2 w-full" name="title"
                             value="{{ old('title') }}" placeholder="Example: Senior Laravel Developer" />
                         @error('title')
@@ -30,7 +41,7 @@
                     </div>
 
                     <div class="mb-6">
-                        <label for="location" class="inline-block text-lg mb-2">Job Location</label>
+                        <label for="location" class="inline-block text-lg mb-2">{{ $displayLocation }}</label>
                         <input type="text" class="border border-gray-200 rounded p-2 w-full" name="location"
                             value="{{ old('location') }}" placeholder="Example: Remote, Boston MA, etc" />
                         @error('location')

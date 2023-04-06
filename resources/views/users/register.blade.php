@@ -22,7 +22,15 @@
                              <p class='text-red-500 text-xs mt-0.5'>{{ $message }}</p>
                          @enderror
                      </div>
-
+                     <div class="mb-6">
+                         <label for="name" class="inline-block text-lg mb-2">
+                             Select Your Role
+                         </label>
+                         <select name='role' class="border border-gray-200 rounded p-2 w-full">
+                             <option value="employer" selected="selected">Employer</option>
+                             <option value="job-seeker">Job-Seeker</option>
+                         </select>
+                     </div>
                      <div class="mb-6">
                          <label for="email" class="inline-block text-lg mb-2">Email</label>
                          <input value="{{ old('email') }}" type="email"
@@ -31,9 +39,16 @@
                          @error('email')
                              <p class='text-red-500 text-xs mt-0.5'>{{ $message }}</p>
                          @enderror
-
                      </div>
-
+                     <div class="mb-6">
+                         <label for="phone" class="inline-block text-lg mb-2">Phone Number</label>
+                         <input value="{{ old('phone') }}" type="phone"
+                             class="border border-gray-200 rounded p-2 w-full" name="phone" />
+                         <!-- Error Example -->
+                         @error('phone')
+                             <p class='text-red-500 text-xs mt-0.5'>{{ $message }}</p>
+                         @enderror
+                     </div>
                      <div class="mb-6">
                          <label for="password" class="inline-block text-lg mb-2">
                              Password

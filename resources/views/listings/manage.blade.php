@@ -10,6 +10,9 @@
             <table class="w-full table-auto rounded-sm">
                 <tbody>
                     @if ($listings)
+                        <script>
+                            console.log({{ $listings }});
+                        </script>
                         @foreach ($listings as $listing)
                             <tr class="border-gray-300">
                                 <td class="px-4 py-8 border-t border-b border-gray-300 text-lg">
@@ -30,17 +33,28 @@
                                         <button class="text-red-500"><i class="fa-solid fa-trash"></i>Delete</button>
                                     </form>
                                 </td>
+                                <td class="px-4 py-8 border-t border-b border-gray-300 text-lg">
+                                    <form method="" action="">
+                                        <button class="text-green-500"><i class="fa-solid fa-download"></i>Export As
+                                            Pdf</button>
+                                    </form>
+                                </td>
                             </tr>
                         @endforeach
-                    @else
-                        <tr class="border-gray-300">
-                            <td class="px-4 py-8 border-t border-b border-gray-300 text-lg">
-                                <p class="text-center">No Listings Found</p>
-                            </td>
-                        </tr>
+                        @if (count($listings) == 0)
+                            <tr class="border-gray-300">
+                                <td class="px-4 py-8 border-t border-b border-gray-300 text-lg">
+                                    <p class="text-center">No Listings Found</p>
+                                </td>
+                            </tr>
+                        @endif
                     @endif
+
                 </tbody>
             </table>
+            <button class="mt-4   bg-black text-white py-2 px-5"><a href="/listings/create">Add
+                    Listing
+                    +</a></button>
         </div>
     </div>
 
