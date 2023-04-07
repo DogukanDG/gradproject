@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ListingController;
+use App\Http\Controllers\PDFController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -64,8 +65,8 @@ Route::get('/login',[UserController::class,'login'])->name('login')->middleware(
 //Log in
 Route::post('/users/authenticate',[UserController::class,'authenticate']);
 
-
-
+//Downloading as pdf
+Route::get('generate-pdf', [PDFController::class, 'generatePDF'])->middleware('auth');
 
 
 //Common Resources Routes:

@@ -23,7 +23,7 @@
                             }
                             
                         @endphp
-                        <label for="name" class="inline-block text-lg mb-2">{{ $displayName }}</label>
+                        <label for="name" class="inline-block text-lg mb-2">Company Name</label>
                         <input type="text" class="border border-gray-200 rounded p-2 w-full" name="name"
                             value="{{ old('name') }}" />
                         @error('name')
@@ -32,7 +32,7 @@
                     </div>
 
                     <div class="mb-6">
-                        <label for="title" class="inline-block text-lg mb-2">{{ $displayTitle }}</label>
+                        <label for="title" class="inline-block text-lg mb-2">Job Title</label>
                         <input type="text" class="border border-gray-200 rounded p-2 w-full" name="title"
                             value="{{ old('title') }}" placeholder="Example: Senior Laravel Developer" />
                         @error('title')
@@ -41,7 +41,7 @@
                     </div>
 
                     <div class="mb-6">
-                        <label for="location" class="inline-block text-lg mb-2">{{ $displayLocation }}</label>
+                        <label for="location" class="inline-block text-lg mb-2">Job Location</label>
                         <input type="text" class="border border-gray-200 rounded p-2 w-full" name="location"
                             value="{{ old('location') }}" placeholder="Example: Remote, Boston MA, etc" />
                         @error('location')
