@@ -11,12 +11,15 @@
 
                 <form method="POST" action="/listings/{{ $listing['id'] }}" enctype="multipart/form-data">
                     @csrf {{-- This is for preventing people from submiting a form from their website to yours --}}
+                    @php
+                        
+                    @endphp
                     @method('PUT')
                     <div class="mb-6">
-                        <label for="company" class="inline-block text-lg mb-2">Company Name</label>
-                        <input type="text" class="border border-gray-200 rounded p-2 w-full" name="company"
-                            value="{{ $listing['company'] }}" />
-                        @error('company')
+                        <label for="name" class="inline-block text-lg mb-2">Company Name</label>
+                        <input type="text" class="border border-gray-200 rounded p-2 w-full" name="name"
+                            value="{{ $listing['name'] }}" />
+                        @error('name')
                             <p class='text-red-500 text-xs mt-0.5'>{{ $message }}</p>
                         @enderror
                     </div>
@@ -75,7 +78,7 @@
                             Company Logo
                         </label>
                         <input type="file" class="border border-gray-200 rounded p-2 w-full" name="logo" />
-                        <img class="w-48 mr-6 mb-6"
+                        <img class="w-48 mr-6 mb-6 "
                             src="{{ $listing['logo'] ? asset('storage/' . $listing['logo']) : asset('/images/no-image.png') }}"
                             alt="" />
                         @error('logo')

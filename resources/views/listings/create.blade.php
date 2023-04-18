@@ -12,10 +12,11 @@
                 <form method="POST" action="/listings" enctype="multipart/form-data">
                     @csrf {{-- This is for preventing people from submiting a form from their website to yours --}}
                     <div class="mb-6">
-                        <label for="company" class="inline-block text-lg mb-2">Company Name</label>
-                        <input type="text" class="border border-gray-200 rounded p-2 w-full" name="company"
-                            value="{{ old('company') }}" />
-                        @error('company')
+
+                        <label for="name" class="inline-block text-lg mb-2">Company Name</label>
+                        <input type="text" class="border border-gray-200 rounded p-2 w-full" name="name"
+                            value="{{ old('name') }}" />
+                        @error('name')
                             <p class='text-red-500 text-xs mt-0.5'>{{ $message }}</p>
                         @enderror
                     </div>

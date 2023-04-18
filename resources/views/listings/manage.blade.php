@@ -10,6 +10,9 @@
             <table class="w-full table-auto rounded-sm">
                 <tbody>
                     @if ($listings)
+                        <script>
+                            console.log({{ $listings }});
+                        </script>
                         @foreach ($listings as $listing)
                             <tr class="border-gray-300">
                                 <td class="px-4 py-8 border-t border-b border-gray-300 text-lg">
@@ -30,17 +33,36 @@
                                         <button class="text-red-500"><i class="fa-solid fa-trash"></i>Delete</button>
                                     </form>
                                 </td>
+                                <td class="px-4 py-8 border-t border-b border-gray-300 text-lg">
+                                    <form action="/generate-pdf">
+                                        <button class="text-green-500"><i class="fa-solid fa-download"></i>Export As
+                                            Pdf</button>
+                                    </form>
+                                </td>
                             </tr>
                         @endforeach
-                    @else
-                        <tr class="border-gray-300">
-                            <td class="px-4 py-8 border-t border-b border-gray-300 text-lg">
-                                <p class="text-center">No Listings Found</p>
-                            </td>
-                        </tr>
+                        @if (count($listings) == 0)
+                            <tr class="text-lg align-items-center border-gray-300">
+                                <td class="px-4 py-8 border-t border-b border-gray-300 text-lg align-items-center">
+                                    <p class="text-lg">No Listing Found</p>
+                                </td>
+                            </tr>
+                        @endif
                     @endif
+
                 </tbody>
             </table>
+            @php
+                $route = auth()->user()->role;
+                if ($route == 'employer') {
+                    $route = 'create';
+                } elseif ($route == 'job-seeker') {
+                    $route = 'createjobseeker';
+                }
+            @endphp
+            <button class="mt-4 bg-black text-white py-2 px-5"><a href={{ $route }}>Add
+                    Listing
+                    +</a></button>
         </div>
     </div>
 
