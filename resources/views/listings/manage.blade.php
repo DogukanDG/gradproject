@@ -42,9 +42,9 @@
                             </tr>
                         @endforeach
                         @if (count($listings) == 0)
-                            <tr class="border-gray-300">
-                                <td class="px-4 py-8 border-t border-b border-gray-300 text-lg">
-                                    <p class="text-center">No Listings Found</p>
+                            <tr class="text-lg align-items-center border-gray-300">
+                                <td class="px-4 py-8 border-t border-b border-gray-300 text-lg align-items-center">
+                                    <p class="text-lg">No Listing Found</p>
                                 </td>
                             </tr>
                         @endif
@@ -52,7 +52,15 @@
 
                 </tbody>
             </table>
-            <button class="mt-4   bg-black text-white py-2 px-5"><a href="/listings/create">Add
+            @php
+                $route = auth()->user()->role;
+                if ($route == 'employer') {
+                    $route = 'create';
+                } elseif ($route == 'job-seeker') {
+                    $route = 'createjobseeker';
+                }
+            @endphp
+            <button class="mt-4 bg-black text-white py-2 px-5"><a href={{ $route }}>Add
                     Listing
                     +</a></button>
         </div>

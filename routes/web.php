@@ -3,9 +3,12 @@
 use App\Models\Listing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PDFController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ListingController;
-use App\Http\Controllers\PDFController;
+use App\Http\Controllers\JobSeekerController;
+use App\Models\JobSeekerListing;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,11 +30,15 @@ Route::get('/',[ListingController::class,'index']);
 
 Route::get('/listings/create',[ListingController::class,'create'])->middleware('auth');
 
+//JOB SEAKER CREATE FORM
+Route::get('/listings/createjobseeker',[JobSeekerController::class,'create'])->middleware('auth');
 //Show Edit Form
 Route::get('/listings/{listing}/edit',[ListingController::class,'edit'])->middleware('auth');
 
 //Edit submit to update listing
 Route::put('/listings/{listing}',[ListingController::class,'update'])->middleware('auth');
+
+
 
 //Edit submit to update listing
 Route::delete('/listings/{listing}',[ListingController::class,'delete'])->middleware('auth');
@@ -47,6 +54,7 @@ Route::get('/listings/manage', [ListingController::class, 'manage'])->middleware
 //all() and find() both is a valid method
 //Show single form this has to be at the end of the page or its causes a bug 
 Route::get('/listings/{id}',[ListingController::class,'show']);
+
 
 
 
@@ -67,6 +75,28 @@ Route::post('/users/authenticate',[UserController::class,'authenticate']);
 
 //Downloading as pdf
 Route::get('generate-pdf', [PDFController::class, 'generatePDF'])->middleware('auth');
+
+
+//JOB SEEKER ROUTES
+Route::get('/job-seekers/{jobseekerlisting}/edit',[JobSeekerController::class,'edit'])->middleware('auth');
+Route::put('/job-seekers/{jobseekerlisting}',[JobSeekerController::class,'update'])->middleware('auth');
+//Delete Job Seeker Listing
+Route::delete('/job-seekers/{jobseekerlisting}',[JobSeekerController::class,'delete'])->middleware('auth');
+
+Route::get('/job-seekers',[JobSeekerController::class,'index']);
+
+
+
+Route::post('/jobseekerlistings',[JobSeekerController::class,'store']);
+
+Route::get('/job-seekers/{id}',[JobSeekerController::class,'show']);
+
+
+
+
+
+
+
 
 
 //Common Resources Routes:

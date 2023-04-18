@@ -12,21 +12,11 @@
                 <form method="POST" action="/listings/{{ $listing['id'] }}" enctype="multipart/form-data">
                     @csrf {{-- This is for preventing people from submiting a form from their website to yours --}}
                     @php
-                        $displayName = 'Company Name';
-                        $displayLocation = 'Job Location';
-                        $displayTitle = 'Job Title';
-                        $displayDesc = 'Job Description';
-                        if (auth()->user()->role == 'job-seeker') {
-                            $displayName = 'Your Name';
-                            $displayLocation = 'Location';
-                            $displayTitle = 'Title';
-                            $displayDescription = 'Description';
-                        }
                         
                     @endphp
                     @method('PUT')
                     <div class="mb-6">
-                        <label for="name" class="inline-block text-lg mb-2">{{ $displayName }}</label>
+                        <label for="name" class="inline-block text-lg mb-2">Company Name</label>
                         <input type="text" class="border border-gray-200 rounded p-2 w-full" name="name"
                             value="{{ $listing['name'] }}" />
                         @error('name')
@@ -35,7 +25,7 @@
                     </div>
 
                     <div class="mb-6">
-                        <label for="title" class="inline-block text-lg mb-2">{{ $displayTitle }}</label>
+                        <label for="title" class="inline-block text-lg mb-2">Job Title</label>
                         <input type="text" class="border border-gray-200 rounded p-2 w-full" name="title"
                             value="{{ $listing['title'] }}" placeholder="Example: Senior Laravel Developer" />
                         @error('title')
@@ -44,7 +34,7 @@
                     </div>
 
                     <div class="mb-6">
-                        <label for="location" class="inline-block text-lg mb-2">{{ $displayLocation }}</label>
+                        <label for="location" class="inline-block text-lg mb-2">Job Location</label>
                         <input type="text" class="border border-gray-200 rounded p-2 w-full" name="location"
                             value="{{ $listing['location'] }}" placeholder="Example: Remote, Boston MA, etc" />
                         @error('location')
@@ -98,7 +88,7 @@
 
                     <div class="mb-6">
                         <label for="description" class="inline-block text-lg mb-2">
-                            {{ $displayDesc }}
+                            Job Description
                         </label>
                         <textarea class="border border-gray-200 rounded p-2 w-full" name="description" rows="10"
                             value="{{ $listing['description'] }}">{{ $listing['description'] }}</textarea>
