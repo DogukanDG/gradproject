@@ -12,17 +12,7 @@
                 <form method="POST" action="/listings" enctype="multipart/form-data">
                     @csrf {{-- This is for preventing people from submiting a form from their website to yours --}}
                     <div class="mb-6">
-                        @php
-                            $displayName = 'Company Name';
-                            $displayLocation = 'Job Location';
-                            $displayTitle = 'Job Title';
-                            if (auth()->user()->role == 'job-seeker') {
-                                $displayName = 'Your Name';
-                                $displayLocation = 'Location';
-                                $displayTitle = 'Title';
-                            }
-                            
-                        @endphp
+
                         <label for="name" class="inline-block text-lg mb-2">Company Name</label>
                         <input type="text" class="border border-gray-200 rounded p-2 w-full" name="name"
                             value="{{ old('name') }}" />

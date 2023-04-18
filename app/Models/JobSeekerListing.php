@@ -2,18 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-
-
-class Listing extends Model
+class JobSeekerListing extends Model
 {
+    //protected $fillable = ['title','location','tags','educations','experience','description','desired_roles'];
+    protected $table = 'jobseekerlistings';
     use HasFactory;
-
-    //protected $fillable = ['title','company','location','website','email','description','tags'];
     public function scopeFilter($query,array $filters){
         if($filters['tag'] ?? false){
             $query ->where('tags','like', '%'.request('tag').'%');
@@ -25,7 +21,4 @@ class Listing extends Model
         }
         
     }
-    public function user(){
-        return $this->belongsTo(User::class,'user_id');
-    }    
 }

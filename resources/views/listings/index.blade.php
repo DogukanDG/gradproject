@@ -10,7 +10,11 @@
                 <x-listing-card :listing='$listing' />
             @endforeach
         @else
-            <p>No Listings Found </p>
+            <div class="content-center">
+                <div class="flex">
+                    <p class="text-xl ">No Listings Found </p>
+                </div>
+            </div>
         @endif
         <div class="lg:grid lg:grid-cols-2 gap-4 space-y-4 md:space-y-0 mx-4">
             <div class="mt-6 p-4 justify-between ">{{ $listings->links() }}</div>

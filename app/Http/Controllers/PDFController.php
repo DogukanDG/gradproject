@@ -16,6 +16,7 @@ class PDFController extends Controller
     */
     public function generatePDF()
     {
+        //DONT FORGET TO CHANGE THE DOWNLOAD NAME (Username.pdf)
         $username=auth()->user()->name;
         $users = User::get();
   
