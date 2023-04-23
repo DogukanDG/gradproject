@@ -2,12 +2,13 @@
 
 use App\Models\Listing;
 use Illuminate\Http\Request;
+use App\Models\JobSeekerListing;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PDFController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\JobSeekerController;
-use App\Models\JobSeekerListing;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +22,7 @@ use App\Models\JobSeekerListing;
 */
 
 //This for returning all listings from the Listing model that we created
-Route::get('/',[ListingController::class,'index']);
+Route::get('/',[ListingController::class,'index'])->name('/');
 
 
 
@@ -59,7 +60,7 @@ Route::get('/listings/{id}',[ListingController::class,'show']);
 
 
 //Show User Registration Page
-Route::get('/register', [UserController::class,'create'])->middleware('guest');
+//Route::get('/register', [UserController::class,'create'])->middleware('guest');
 
 Route::post('/users',[UserController::class,'store']);
 
@@ -94,9 +95,18 @@ Route::get('/job-seekers/{id}',[JobSeekerController::class,'show']);
 
 
 
+ 
+Route::get('/newregister', function () {
+    return view('users.register');
+})->name('newregister');
+
+Route::get('/verify', function () {
+    return view('components.verify');
+})->name('verify');
 
 
-
+Route::post('/kayit', [AuthController::class,'create'])->name('kayit');
+Route::post('/verify', [AuthController::class,'verify'])->name('verify');
 
 
 //Common Resources Routes:

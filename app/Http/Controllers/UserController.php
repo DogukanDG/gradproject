@@ -8,6 +8,9 @@ use Illuminate\Foundation\Auth\User;
 
 class UserController extends Controller
 {
+    public $phone;
+
+    public $showModal = false;
     //show register create form
     public function create(){
         return view('users.register');
