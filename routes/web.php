@@ -37,12 +37,16 @@ Route::get('/listings/createjobseeker',[JobSeekerController::class,'create'])->m
 Route::get('/listings/{listing}/edit',[ListingController::class,'edit'])->middleware('auth');
 
 //Edit submit to update listing
+Route::put('/listings/{listing}/renew',[ListingController::class,'renew'])->middleware('auth');
+
+Route::put('/job-seekers/{jobseekerlisting}renew',[ListingController::class,'renew'])->middleware('auth');
 Route::put('/listings/{listing}',[ListingController::class,'update'])->middleware('auth');
 
 
 
 //Edit submit to update listing
 Route::delete('/listings/{listing}',[ListingController::class,'delete'])->middleware('auth');
+
 
 //Store Listing Data
 Route::post('/listings',[ListingController::class,'store']);

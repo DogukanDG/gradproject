@@ -10,9 +10,6 @@
             <table class="w-full table-auto rounded-sm">
                 <tbody>
                     @if ($listings)
-                        <script>
-                            console.log({{ $listings }});
-                        </script>
                         @foreach ($listings as $listing)
                             <tr class="border-gray-300">
                                 <td class="px-4 py-8 border-t border-b border-gray-300 text-lg">
@@ -31,6 +28,13 @@
                                         @csrf
                                         @method ('DELETE')
                                         <button class="text-red-500"><i class="fa-solid fa-trash"></i>Delete</button>
+                                    </form>
+                                </td>
+                                <td class="px-4 py-8 border-t border-b border-gray-300 text-lg">
+                                    <form method="POST" action="/listings/{{ $listing['id'] }}/renew">
+                                        @csrf {{-- This is for preventing people from submiting a form from their website to yours --}}
+                                        @method('PUT')
+                                        <button class="text-black-500"><i class="fa-solid fa-refresh"></i>Renew</button>
                                     </form>
                                 </td>
                                 <td class="px-4 py-8 border-t border-b border-gray-300 text-lg">

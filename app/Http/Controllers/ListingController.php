@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use id;
 use auth;
+use App\Models\User;
 use App\Models\Listing;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Session\Session;
-use App\Models\User;
 
 
 
@@ -61,7 +62,7 @@ class ListingController extends Controller
 
         $formFields['user_id'] = auth()->id();
         
-        
+        $formFields['expiration_date'] = now()-> addDays(5);
         Listing::create($formFields);
         return redirect('/')->with('message','Listing Created');
     }
@@ -90,7 +91,7 @@ class ListingController extends Controller
             $formFields['logo'] = $request ->file('logo')->store('logos','public');
         }
 
-        
+        $formFields['expiration_date'] = now()-> addDays(5);
         $listing->update($formFields);
         
         return redirect()->back()->with('message','Listing Updated!');
@@ -105,12 +106,18 @@ class ListingController extends Controller
             return redirect('')->with('message','Listing Deleted Successfully');
             
         }
+        
+        public function renew(Listing $listing){
+           $listing->update(['expiration_date'=>now()->addDays()]);
+           return redirect()->back()->with('message','Listing Renewed!');
+        }
+        
         //Manage listings
         public function manage(){
             return view('listings.manage', ['listings'=>auth()
             ->user()->listings()->get()]);
         }
-
+        
         
        
 }

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('location');
             $table->string('email');
+            $table->dateTime('expiration_date')->nullable();
             $table->string('website');
             $table->longtext('description');
             $table->timestamps();

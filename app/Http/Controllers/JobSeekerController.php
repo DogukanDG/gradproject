@@ -36,6 +36,7 @@ class JobSeekerController extends Controller
         $formFields['educations'] = json_encode($educations);
         // $array = json_decode($formFields['educations']);
         // dd($formFields['educations'],$array[0]);
+        $formFields['expiration_date'] = now()-> addDays(5);
         $formFields['user_id'] = auth()->id();
         $formFields['name'] = auth()->user()->name;
         $formFields['email'] = auth()->user()->email;
@@ -73,6 +74,7 @@ class JobSeekerController extends Controller
         if($request->hasFile('cv')){
             $formFields['cv'] = $request ->file('cv')->store('cvs','public');
         }
+        $formFields['expiration_date'] = now()-> addDays(5);
         $formField['is_active'] = true;
         $formFields['educations'] = json_encode($educations);
         // $array = json_decode($formFields['educations']);
@@ -83,7 +85,10 @@ class JobSeekerController extends Controller
         $jobseekerlisting->update($formFields);
         return redirect('/')->with('message','Listing Edited');
     }
-    
+    public function renew(JobSeekerListing $jobseekerlisting){
+        $jobseekerlisting->update(['expiration_date'=>now()->addDays()]);
+        return redirect()->back()->with('message','Listing Renewed!');
+     }
     public function delete(JobSeekerListing $jobseekerlisting){
         // if($listing->user_id != auth()->id()){
         //     abort(403,'Unauthorized Action');
