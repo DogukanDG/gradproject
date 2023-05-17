@@ -93,4 +93,9 @@ class JobSeekerController extends Controller
     }
 
     //ALSO ADD MANAGE LİSTİNGS HERE
+    public function manage(){
+        return view('listings.managejobseekerlistings', ['jobseekerlistings'=>auth()
+        ->user()->jobseekerlistings()->get()]);
+    }
+
 }

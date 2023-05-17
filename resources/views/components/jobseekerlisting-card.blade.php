@@ -20,7 +20,7 @@
             </div>
         </div>
         {{-- <div class="px-6 py-4 border-t border-gray-200">
-            <div class="flex items-center justify-between">
+            <div class="flex items-center justify-between">oh
                 <div class="flex items-center">
                     <img class="w-10 h-10 rounded-full mr-2" src="https://via.placeholder.com/150"
                         alt="Job seeker avatar">
