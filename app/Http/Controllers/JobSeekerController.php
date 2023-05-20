@@ -10,25 +10,24 @@ use App\Models\JobSeekerListing;
 class JobSeekerController extends Controller
 {
     public function index(){
-        return view('listings.jobseekerindex' ,['jobseekerlistings' => JobSeekerListing::latest() -> filter(request(['tag','search'])) -> simplepaginate(6)]);
+        return view('listings.jobseekerindex' ,['jobseekerlistings' => JobSeekerListing::latest() -> filter(request(['skills','search'])) -> simplepaginate(6)]);
     }
 
     public function create(){
         
         return view('listings.jobseekercreate');
 
-        
     }
     public function store(Request $request){
+        $skills = $request->input('skills');
         $educations = $request->input('educations');
         $formFields = $request->validate([
             'title' => 'required',
             'location' => 'required',
             'experience' => 'required',
-            'tags' => 'required',
-            'desired_roles'=>'required',
             'description' => 'required'
         ]);
+        $formFields['skills'] = json_encode($skills);
         if($request->hasFile('cv')){
             $formFields['cv'] = $request ->file('cv')->store('cvs','public');
         }
@@ -39,6 +38,7 @@ class JobSeekerController extends Controller
         $formFields['user_id'] = auth()->id();
         $formFields['name'] = auth()->user()->name;
         $formFields['email'] = auth()->user()->email;
+        
         JobSeekerListing::create($formFields);
         return redirect('/')->with('message','Listing Created');
     }
@@ -61,15 +61,15 @@ class JobSeekerController extends Controller
     
     public function update(Request $request,JobSeekerListing $jobseekerlisting){
         //dd($request->all(),$listing);
+        $skills = $request->input('skills');
         $educations = $request->input('educations');
         $formFields = $request->validate([
             'title' => 'required',
             'location' => 'required',
             'experience' => 'required',
-            'tags' => 'required',
-            'desired_roles'=>'required',
             'description' => 'required'
         ]);
+        $formFields['skills'] = json_encode($skills);
         if($request->hasFile('cv')){
             $formFields['cv'] = $request ->file('cv')->store('cvs','public');
         }

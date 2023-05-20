@@ -45,23 +45,21 @@ class ListingController extends Controller
     
     //This function is for storing a form
     public function store(Request $request){
-        
+    
+        $skills = $request->input('skills');
         $formFields = $request->validate([
             'title' => 'required',
             'name' => ['required', Rule::unique('listings', 'name')],
             'location' => 'required',
-            'website' => 'required',
             'email' => ['required', 'email'],
-            'tags' => 'required',
             'description' => 'required'
         ]);
         if($request->hasFile('logo')){
             $formFields['logo'] = $request ->file('logo')->store('logos','public');
         }
-
+        $formFields['skills'] = json_encode($skills);
         $formFields['user_id'] = auth()->id();
-        
-        
+        $formField['is_active'] = true;
         Listing::create($formFields);
         return redirect('/')->with('message','Listing Created');
     }
@@ -75,22 +73,20 @@ class ListingController extends Controller
         // if($listing->user_id != auth()->id()){
         //     abort(403,'Unauthorized Action');
         // }
-        
+        $skills = $request->input('skills');
         $formFields = $request->validate([
             'title' => 'required',        
             'name' => ['required'],
             'location' => 'required',
-            'website' => 'required',
             'email' => ['required', 'email'],
-            'tags' => 'required',
             'description' => 'required'
         ]);
         
         if($request->hasFile('logo')){
             $formFields['logo'] = $request ->file('logo')->store('logos','public');
         }
-
-        
+        $formFields['skills'] = json_encode($skills);
+        $formFields['user_id'] = auth()->id();
         $listing->update($formFields);
         
         return redirect()->back()->with('message','Listing Updated!');

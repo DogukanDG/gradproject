@@ -42,7 +42,7 @@
 
                     <p>
                         Dont have an account?
-                        <a href="/register" class="text-laravel">Register</a>
+                        <a href="/newregister" class="text-laravel">Register</a>
                     </p>
             </div>
             </form>

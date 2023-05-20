@@ -19,11 +19,10 @@ return new class extends Migration
             $table->string('title');
             $table->string('logo')->nullable();
             $table->boolean('is_active')->default(true);
-            $table->string('tags');
+            $table->json('skills')->nullable();
             $table->string('name');
             $table->string('location');
             $table->string('email');
-            $table->string('website');
             $table->longtext('description');
             $table->timestamps();
         });

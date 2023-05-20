@@ -13,24 +13,21 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('jobseekerlistings', function (Blueprint $table) {
+        Schema::create('applicationsoffers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('title');
-            $table->string('name');
+            $table->unsignedInteger('sender_id');
+            $table->unsignedInteger('receiver_id');
+            $table->string('sender_email');
+            $table->string('reciever_email');
             $table->boolean('is_active')->default(true);
-            $table->json('skills');
-            $table->json('educations')->nullable();
-            $table->string('experience');
-            $table->string('location');
-            $table->string('email');
+            $table->string('phone_number');
             $table->string('cv')->nullable();
             $table->longtext('description');
             $table->timestamps();
         });
+        
     }
 
-    
     /**
      * Reverse the migrations.
      *
@@ -38,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('jobseekerlisting');
+        Schema::dropIfExists('table_name');
     }
 };

@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ApplicationOffers;
+use App\Http\Controllers\ApplicationsOffers;
+
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\JobSeekerController;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Php;
@@ -62,8 +63,10 @@ Route::get('/listings/{id}',[ListingController::class,'show']);
 //*OFFERS AND APPLİCATONS FOR JOB SEEKER AND EMPLOYERS
 
 
-Route::get('/applications',[ApplicationOffers::class,'index1'])->middleware('auth');
-Route::get('/offers',[ApplicationOffers::class,'index2'])->middleware('auth');
+Route::get('/applications',[ApplicationsOffers::class,'index1'])->middleware('auth');
+Route::get('/offers',[ApplicationsOffers::class,'index2'])->middleware('auth');
+
+Route::post('/storeoffer',[ApplicationsOffers::class,'storeoffers'],);
 
 
 //*Show User Registration Page

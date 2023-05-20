@@ -11,6 +11,9 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="//unpkg.com/alpinejs" defer></script>
+    <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
     <script>
         tailwind.config = {
             theme: {
@@ -71,7 +74,7 @@
                     @php
                         $route = auth()->user()->role;
                         if ($route == 'employer') {
-                            $route = 'manage';
+                            $route = '/listings/manage';
                         } elseif ($route == 'job-seeker') {
                             $route = '/listings/jobseekermanage';
                         }

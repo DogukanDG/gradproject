@@ -12,7 +12,7 @@
         <div>
             <a href="/register"
                 class="inline-block border-2 border-white text-white py-2 px-4 rounded-xl uppercase mt-2 hover:text-black hover:border-black">Sign
-                Up to List a Gig</a>
+                Up to List a listing</a>
         </div>
     </div> --}}
     <div class="container mx-auto flex flex-col px-5 pt-16 pb-8 justify-center items-center">
@@ -23,7 +23,7 @@
                 locations for you to choose from.</p>
         </div>
         <div>
-            <a href="/register"
+            <a href="/newregister"
                 class="inline-block border-2 border-blue text-blue py-2 px-4 rounded-xl uppercase mt-2 hover:text-black hover:border-black">Sign
                 Up To Post A listing</a>
         </div>

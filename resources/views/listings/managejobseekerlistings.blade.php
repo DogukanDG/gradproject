@@ -10,13 +10,11 @@
                 <table class="w-full table-auto rounded-sm">
                     <tbody>
                         @if ($jobseekerlistings)
-                            <script>
-                                console.log({{ $jobseekerlistings }});
-                            </script>
+
                             @foreach ($jobseekerlistings as $jobseekerlisting)
                                 <tr class="border-gray-300">
                                     <td class="px-4 py-8 border-t border-b border-gray-300 text-lg">
-                                        <a href="show.html">
+                                        <a href="/job-seekers/{{ $jobseekerlisting['id'] }}">
                                             {{ $jobseekerlisting['title'] }}
                                         </a>
                                     </td>
