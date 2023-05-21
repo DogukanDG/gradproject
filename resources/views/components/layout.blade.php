@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
         integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="//unpkg.com/alpinejs" defer></script>
     <script>
@@ -23,6 +24,7 @@
         };
     </script>
     <title>WorkLink | Find Laravel Jobs & Projects</title>
+    
 </head>
 
 <body class="mb-48">
@@ -35,10 +37,10 @@
                         <a href="/"><img class="w-24" src="{{ asset('images/logo3.png') }}" alt=""
                                 class="logo" /></a>
                         <div class="flex">
-                            <a class=" font-bold text-gray-800 text-bold hover:text-gray-600 px-4"
+                            <a class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                                 href="/">Home</a>
-                            <a class="font-bold text-gray-800 hover:text-gray-600 px-4" href="/employers">Employers</a>
-                            <a class="font-bold text-gray-800 hover:text-gray-600 px-4" href="/job-seekers">Job
+                            <a class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"" href="/employers">Employers</a>
+                            <a class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"" href="/job-seekers">Job
                                 Seekers</a>
                         </div>
                     </div>
@@ -49,13 +51,41 @@
             @auth
                 <p>Welcome, {{ auth()->user()->name }}!</p>
                 <li>
-                    <a href="/listings/manage" class="hover:text-laravel"><i class="fa-solid fa-gear"></i>My Listings</a>
+                    @php
+                        $route = auth()->user()->role;
+                        if ($route == 'employer') {
+                            $route = '/applications';
+                        } elseif ($route == 'job-seeker') {
+                            $route = '/offers';
+                        }
+                    @endphp
+                    @if (auth()->user()->role == 'employer')
+                        <a href={{ $route }} class="hover:text-laravel"><i class="fa-solid fa-book "></i>
+                            Applications</a>
+                    @elseif (auth()->user()->role == 'job-seeker')
+                        <a href={{ $route }} class="hover:text-laravel"><i class="fa-solid fa-envelope"></i>
+                            Offers</a>
+                    @else
+                        <p>Else</p>
+                    @endif
+                </li>
+                <li>
+                    @php
+                        $route = auth()->user()->role;
+                        if ($route == 'employer') {
+                            $route = 'manage';
+                        } elseif ($route == 'job-seeker') {
+                            $route = '/listings/jobseekermanage';
+                        }
+                    @endphp
+                    <a href={{ $route }} class="hover:text-laravel"><i class="fa-solid fa-gear"></i> My Listings</a>
+
                 </li>
                 <li>
                     <form class='inline' method='POST' action='/logout'>
                         @csrf
                         <button>
-                            <i class="fa-solid fa-door-closed"></i>Logout
+                            <i class="fa-solid fa-door-closed"></i> Logout
                         </button>
                     </form>
                 </li>
@@ -64,10 +94,18 @@
                     <a href="/register" class="hover:text-laravel"><i class="fa-solid fa-user-plus"></i> Register</a>
                 </li> --}}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('newregister') }}">{{ __('Register') }}</a>
+                    <a class="nav-link" href="{{ route('newregister') }}">
+<button data-popover-target="popover-default" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Register</button>
+
+
+                        </a>
                 </li <li>
-                <a href="/login" class="hover:text-laravel"><i class="fa-solid fa-arrow-right-to-bracket"></i>
-                    Login</a>
+                <a href="/login" class="hover:text-laravel">
+<button data-popover-target="popover-default" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Login</button>
+
+        
+    
+</a>
                 </li>
             @endauth
         </ul>
@@ -76,6 +114,8 @@
     <main>
         {{ $slot }}
     </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+    
 </body>
 {{-- <footer
     class="fixed bottom-0 left-0 w-full flex items-center justify-start font-bold bg-laravel text-white h-24 mt-24 opacity-90 md:justify-center">
