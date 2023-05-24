@@ -38,6 +38,16 @@
                                                 Pdf</button>
                                         </form>
                                     </td>
+                                    <td class="px-4 py-8 border-t border-b border-gray-300 text-lg">
+                                        <form
+                                            action="{{ route('jobseekerlistings.applysearch', ['jobseekerlisting' => $jobseekerlisting]) }}"
+                                            method="POST" enctype="multipart/form-data">
+                                            @csrf
+                                            @method('PUT')
+                                            <button class="text-black-500"><i class="fa-solid fa-search"></i>Apply
+                                                Search</button>
+                                        </form>
+                                    </td>
                                 </tr>
                             @endforeach
                             @if (count($jobseekerlistings) == 0)

@@ -6,7 +6,11 @@
                     Manage Listings
                 </h1>
             </header>
-
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
             <table class="w-full table-auto rounded-sm">
                 <tbody>
                     @if ($listings)
@@ -37,6 +41,15 @@
                                     <form action="/generate-pdf">
                                         <button class="text-green-500"><i class="fa-solid fa-download"></i>Export As
                                             Pdf</button>
+                                    </form>
+                                </td>
+                                <td class="px-4 py-8 border-t border-b border-gray-300 text-lg">
+                                    <form action="{{ route('listings.applysearch', ['listing' => $listing]) }}"
+                                        method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        @method('PUT')
+                                        <button class="text-black-500"><i class="fa-solid fa-apply"></i>Apply
+                                            Search</button>
                                     </form>
                                 </td>
                             </tr>

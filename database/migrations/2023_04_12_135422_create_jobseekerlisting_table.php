@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('experience');
             $table->string('location');
             $table->string('email');
+            $table->boolean('applysearch')->default(false);
             $table->string('cv')->nullable();
             $table->longtext('description');
             $table->timestamps();

@@ -23,12 +23,12 @@ return new class extends Migration
             $table->string('name');
             $table->string('location');
             $table->string('email');
+            $table->boolean('applysearch')->default(false);
             $table->longtext('description');
             $table->timestamps();
         });
     }
-
-    /**
+/**
      * Reverse the migrations.
      *
      * @return void

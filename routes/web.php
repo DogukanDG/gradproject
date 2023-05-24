@@ -25,8 +25,10 @@ use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Php;
 */
 
 //This for returning all listings from the Listing model that we created
-Route::get('/',[ListingController::class,'index'])->name('/');
 
+Route::get('/',[ListingController::class,'homepage']);
+
+Route::get('/employers',[ListingController::class,'index']);
 
 
 
@@ -39,10 +41,15 @@ Route::get('/listings/createjobseeker',[JobSeekerController::class,'create'])->m
 //*Show Edit Form
 Route::get('/listings/{listing}/edit',[ListingController::class,'edit'])->middleware('auth');
 
+
+
+
 //*Edit submit to update listing
 Route::put('/listings/{listing}',[ListingController::class,'update'])->middleware('auth');
 
+Route::put('/listings/{listing}/applysearch', [ListingController::class, 'applysearch'])->name('listings.applysearch')->middleware('auth');
 
+//Route::put('/listings/{$listing}/applysearch',[ListingController::class,'applysearch'])->middleware('auth');
 
 //*Edit submit to update listing
 Route::delete('/listings/{listing}',[ListingController::class,'delete'])->middleware('auth');
@@ -91,6 +98,8 @@ Route::get('generate-pdf', [PDFController::class, 'generatePDF'])->middleware('a
 //*JOB SEEKER ROUTES
 Route::get('/job-seekers/{jobseekerlisting}/edit',[JobSeekerController::class,'edit'])->middleware('auth');
 Route::put('/job-seekers/{jobseekerlisting}',[JobSeekerController::class,'update'])->middleware('auth');
+
+Route::put('/job-seekers/{jobseekerlisting}/applysearch', [JobSeekerController::class, 'applysearch'])->name('jobseekerlistings.applysearch')->middleware('auth');
 //*Delete Job Seeker Listing
 Route::delete('/job-seekers/{jobseekerlisting}',[JobSeekerController::class,'delete'])->middleware('auth');
 

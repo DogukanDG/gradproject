@@ -9,12 +9,17 @@ use App\Models\JobSeekerListing;
 
 class ApplicationsOffers extends Controller
 {
+    //*APPLICATIONS PAGE
     
     public function index1(){
         return view('listings.applications');
     }
+    
+    //* OFFERS PAGE
     public function index2(){
-        return view('listings.offers');
+        $offers = Offers::latest()->get();
+        return view('listings.offers', ['offers' => $offers]);
+
     }
 
     public function storeoffers(Request $request){
