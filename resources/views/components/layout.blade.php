@@ -34,20 +34,20 @@
             <nav class="bg-white shadow">
                 <div class="container mx-auto px-4">
                     <div class="flex justify-between items-center py-4">
-                        <a href="/"><img class="w-24" src="{{ asset('images/logo3.png') }}" alt=""
+                        <a href="/"><img class="w-24" src="{{ asset('images/worklink1.png') }}" alt=""
                                 class="logo" /></a>
                         <div class="flex">
                             <a class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                                 href="/">Home</a>
-                            <a class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"" href="/employers">Employers</a>
-                            <a class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"" href="/job-seekers">Job
+                            <a class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" href="/employers">Employers</a>
+                            <a class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" href="/job-seekers">Job
                                 Seekers</a>
                         </div>
                     </div>
                 </div>
             </nav>
         </div>
-        <ul class="flex space-x-6 mr-6 text-lg">
+        <ul class="flex space-x-6 mr-6 text-lg ">
             @auth
                 <p>Welcome, {{ auth()->user()->name }}!</p>
                 <li>
@@ -60,7 +60,7 @@
                         }
                     @endphp
                     @if (auth()->user()->role == 'employer')
-                        <a href={{ $route }} class="hover:text-laravel"><i class="fa-solid fa-book "></i>
+                        <a href={{ $route }}  type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"></button><i class="fa-solid fa-book "></i>
                             Applications</a>
                     @elseif (auth()->user()->role == 'job-seeker')
                         <a href={{ $route }} class="hover:text-laravel"><i class="fa-solid fa-envelope"></i>
@@ -78,14 +78,14 @@
                             $route = '/listings/jobseekermanage';
                         }
                     @endphp
-                    <a href={{ $route }} class="hover:text-laravel"><i class="fa-solid fa-gear"></i> My Listings</a>
+                    <a href={{ $route }} type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"></button><i class="fa-solid fa-gear"></i> My Listings</a>
 
                 </li>
                 <li>
-                    <form class='inline' method='POST' action='/logout'>
+                    <form class='inline' method='POST' action='/logout' >
                         @csrf
                         <button>
-                            <i class="fa-solid fa-door-closed"></i> Logout
+                            <i class="fa-solid fa-door-closed "></i> Logout
                         </button>
                     </form>
                 </li>

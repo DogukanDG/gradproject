@@ -17,14 +17,14 @@
     </div> --}}
     <div class="container mx-auto flex flex-col px-5 pt-16 pb-8 justify-center items-center">
         <div class="w-full md:w-2/3 flex flex-col items-center text-center">
-            <h1 class="title-font sm:text-4xl text-3xl mb-4 font-bold text-gray-900">WorkLink</h1>
+            <h1 class="title-font sm:text-4xl text-3xl mb-4 font-bold text-gray-900">Work<span class="text-blue-700 dark:text-blue-700 animate-pulse ">Link</span></h1>
             <p class="mb-8 leading-relaxed">Whether you're looking to move to a new role or just seeing what's
                 available, we've gathered this comprehensive list of open positions from a variety of companies and
                 locations for you to choose from.</p>
         </div>
         <div>
             <a href="/register"
-                class="inline-block border-2 border-blue text-blue py-2 px-4 rounded-xl uppercase mt-2 hover:text-black hover:border-black">Sign
+            <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-lg px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 transition ease-in-out delay-100 bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500 duration-200 ..."></button>Sign
                 Up To Post A listing</a>
         </div>
     </div>
