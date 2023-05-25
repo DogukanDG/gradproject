@@ -1,6 +1,6 @@
 <section class="relative h-72  flex flex-col justify-center align-center text-center space-y-4 mb-4">
     {{-- <div class="absolute top-0 left-0 w-full h-full  bg-no-repeat bg-center"
-        style="background-image: url('images/blue-background.jpg')"></div>
+        style="background-image: url('images/handshake.jpg')"></div>
 
     <div class="z-10">
         <h1 class="text-6xl font-bold uppercase text-white">
@@ -15,17 +15,22 @@
                 Up to List a Gig</a>
         </div>
     </div> --}}
-    <div class="container mx-auto flex flex-col px-5 pt-16 pb-8 justify-center items-center">
-        <div class="w-full md:w-2/3 flex flex-col items-center text-center">
-            <h1 class="title-font sm:text-4xl text-3xl mb-4 font-bold text-gray-900">WorkLink</h1>
-            <p class="mb-8 leading-relaxed">Whether you're looking to move to a new role or just seeing what's
-                available, we've gathered this comprehensive list of open positions from a variety of companies and
-                locations for you to choose from.</p>
-        </div>
-        <div>
-            <a href="/register"
-                class="inline-block border-2 border-blue text-blue py-2 px-4 rounded-xl uppercase mt-2 hover:text-black hover:border-black">Sign
-                Up To Post A listing</a>
+    
+</section>
+
+<section class="bg-center bg-cover bg-no-repeat bg-[url('images/handshake.jpg')]  bg-blend-multiply ">
+    <div class="px-4 mx-auto my-auto max-w-prose text-center py-24 lg:py-14">
+        <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-slate-100 font-serif md:text-5xl lg:text-6xl font-extrabold">Work<span class = "text-blue-600 font-extrabold ">Link</span>: Uniting Paths, Amplifying Success.</h1>
+        <p class="mb-8 font-serif text-lg font-extrabold text-white lg:text-xl sm:px-16 lg:px-48">At Worklink, we believe that success is not merely an individual journey but a collective endeavor.</p>
+        <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
+            <a  class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 focus:ring-4 focus:ring-blue-300 transition ease-in-out delay-100 bg-blue-700 hover:-translate-y-1 hover:scale-110 hover:bg-blue-700 duration-300 ..." href="{{ route('newregister') }}">
+                Register Now</a>
+            <a href="" class="inline-flex justify-center hover:text-gray-900 items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg border border-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-400">
+                Learn more
+            </a>  
         </div>
     </div>
 </section>
+
+
+

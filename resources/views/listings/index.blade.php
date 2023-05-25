@@ -12,7 +12,7 @@
         @else
             <div class="content-center">
                 <div class="flex">
-                    <p class="text-xl ">No Listings Found </p>
+                    <p class="text-xl "> </p>
                 </div>
             </div>
         @endif
