@@ -1,8 +1,8 @@
  <x-layout>
-    
+
  <style>
     .form-container {
-        background: linear-gradient(45deg, #8A4FFF, #3B82F6);
+        background: linear-gradient(45deg, #4F46E5, #3B82F6);
         color: #fff;
         padding: 20px;
         border-radius: 10px;
@@ -43,17 +43,20 @@
         border-color: rgba(255, 255, 255, 0.5);
     }
 
+   
     .form-select {
         width: 100%;
         padding: 10px;
         border: 1px solid rgba(255, 255, 255, 0.3);
         border-radius: 5px;
         background-color: rgba(255, 255, 255, 0.1);
-        color: #fff;
+        color: #000; /* Change the text color to black or any other suitable color */
     }
 
+
+
     .form-button {
-        background: linear-gradient(45deg, #8A4FFF, #3B82F6);
+        background: linear-gradient(45deg, #3B82F6, #4F46E5);
         color: #fff;
         border: none;
         padding: 10px 20px;
@@ -73,9 +76,9 @@
     <div class="flex flex-wrap justify-center">
         <div class="md:w-2/3 pr-4 pl-4 pt-16">
             <div class="relative flex flex-col min-w-0 rounded break-words form-container">
-                <div class="py-3 px-6 mb-0 form-title">
+                <h2 class="text-4xl font-bold uppercase text-white mb-1 animate-pulse text-center">
                     {{ __('Register') }}
-                </div>
+                </h2>
                 <div class="flex-auto p-6">
                     <form method="POST" action="{{ route('kayit') }}">
                         @csrf

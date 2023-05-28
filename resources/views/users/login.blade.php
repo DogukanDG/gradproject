@@ -1,33 +1,30 @@
 <x-layout>
   <main>
-<style>
+  <style>
   .btn-animate {
-  animation-name: buttonAnimation;
-  animation-duration: 1s;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-}
+    animation-name: buttonAnimation;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+  }
 
-@keyframes buttonAnimation {
-  from {
-    transform: scale(1);
+  @keyframes buttonAnimation {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.05);
+    }
   }
-  to {
-    transform: scale(1.05);
-  }
-}
 </style>
  
 <div class="flex justify-end items-center h-screen">
-  <div class="w-1/2">
-    <!-- Replace the placeholder image URL with your desired image source -->
-    <img class="w-full h-auto max-h-screen" src="images/loginpic3.png" alt="Image">
-  </div>
-  <div class="w-1/2">
+ 
+  <div class="w-full">
     <div class="mx-4">
-      <div class="bg-gradient-to-r from-purple-400 to-indigo-500 border border-blue-200 p-10 rounded-lg max-w-lg mx-auto mt-24 animate-fadeIn">
+      <div class="bg-gradient-to-br from-indigo-600 to-blue-900 border border-blue-200 p-10 rounded-lg max-w-lg mx-auto mt-24 animate-fadeIn">
         <header class="text-center">
-          <h2 class="text-4xl font-bold uppercase text-white mb-4">Login</h2>
+          <h2 class="text-4xl font-bold uppercase text-white mb-4 animate-bounce ">Login</h2>
           <p class="text-xl text-white mb-6">Login to your account</p>
         </header>
 
@@ -43,7 +40,6 @@
             @error('email')
             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
             @enderror
-
           </div>
 
           <div class="mb-6">
@@ -58,7 +54,7 @@
 
           <div class="mb-6">
             <button type="submit"
-              class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:bg-indigo-700 text-white rounded py-2 px-4 transition-all duration-200 btn-animate">
+              class="bg-gradient-to-r from-indigo-700 to-blue-800 hover:bg-indigo-800 text-white rounded py-2 px-4 transition-all duration-200 btn-animate">
               Sign In
             </button>
           </div>
@@ -72,7 +68,6 @@
     </div>
   </div>
 </div>
-
 
 
   
