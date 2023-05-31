@@ -48,6 +48,17 @@
                         @enderror
                     </div>
 
+                    <div class="mb-6">
+                        <label for="person_need" class="inline-block text-lg mb-2">Number Of Personnel To Be
+                            Recruited</label>
+                        <input type="text" class="border border-gray-200 rounded p-2 w-full" name="person_need"
+                            value="{{ old('person_need') }}" />
+                        @error('person_need')
+                            <p class='text-red-500 text-xs mt-1'>{{ $message }}</p>
+                        @enderror
+                    </div>
+
+
                     <p class="inline-block text-lg mb-2">Skills</p><br>
                     <div class="bg-white shadow-md p-4 rounded-md flex justify-center">
 

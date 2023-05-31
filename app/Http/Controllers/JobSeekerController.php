@@ -62,7 +62,7 @@ class JobSeekerController extends Controller
     // }
 
     public function index()
-{
+    {
     $user = auth()->user();
     
     if ($user && $user->role === 'employer') {
@@ -92,6 +92,7 @@ class JobSeekerController extends Controller
         usort($matches, function ($a, $b) {
             return $b['match_score'] <=> $a['match_score'];
         });
+
 
         return view('listings.jobseekerindex', ['sortedlisting' => $matches, 'jobseekerlistings' => []]);
         } else {
@@ -129,7 +130,7 @@ class JobSeekerController extends Controller
             'title' => 'required',
             'location' => 'required',
             'experience' => 'required',
-            'description' => 'required'
+            'description' => 'required',    
         ]);
         $formFields['skills'] = json_encode($skills);
         if($request->hasFile('cv')){
@@ -171,7 +172,7 @@ class JobSeekerController extends Controller
             'title' => 'required',
             'location' => 'required',
             'experience' => 'required',
-            'description' => 'required'
+            'description' => 'required',
         ]);
         $formFields['skills'] = json_encode($skills);
         if($request->hasFile('cv')){

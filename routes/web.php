@@ -73,8 +73,14 @@ Route::get('/listings/{id}',[ListingController::class,'show']);
 Route::get('/applications',[ApplicationsOffers::class,'index1'])->middleware('auth');
 Route::get('/offers',[ApplicationsOffers::class,'index2'])->middleware('auth');
 
-Route::post('/storeoffer',[ApplicationsOffers::class,'storeoffers'],);
+Route::put('/offers/{offer}/accept',[ApplicationsOffers::class,'offeraccept'])->middleware('auth');
+Route::delete('/offers/{offer}/decline',[ApplicationsOffers::class,'offerdecline'])->middleware('auth');
 
+Route::put('/applications/{application}/accept',[ApplicationsOffers::class,'applicationaccept'])->middleware('auth');
+Route::delete('/applications/{application}/decline',[ApplicationsOffers::class,'applicationdecline'])->middleware('auth');
+
+Route::post('/storeoffer',[ApplicationsOffers::class,'storeoffers'],);
+Route::post('/storeapplication',[ApplicationsOffers::class,'storeapplications'],);
 
 //*Show User Registration Page
 //*Route::get('/register', [UserController::class,'create'])->middleware('guest');

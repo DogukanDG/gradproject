@@ -23,7 +23,7 @@ class ListingController extends Controller
 
     public function index(){
         $user = auth()->user();
-    
+        
     if ($user && $user->role === 'job-seeker') {
         $jobListings = Listing::all();
         $employerSkills = JobSeekerListing::where('user_id', $user->id)
@@ -31,7 +31,6 @@ class ListingController extends Controller
             ->get();
         $jobSeekerTargetSkillsArray = $employerSkills[0]->getAttributes()['skills'];
         $matches = [];
-        
         foreach ($jobListings as $jobListing) {
             $matchedSkills = array_intersect(
                 json_decode($jobSeekerTargetSkillsArray),
@@ -87,14 +86,14 @@ class ListingController extends Controller
     
     //This function is for storing a form
     public function store(Request $request){
-    
         $skills = $request->input('skills');
         $formFields = $request->validate([
             'title' => 'required',
             'name' => ['required', Rule::unique('listings', 'name')],
             'location' => 'required',
             'email' => ['required', 'email'],
-            'description' => 'required'
+            'description' => 'required',
+            'person_need'=>['required', 'numeric', 'max:10']
         ]);
         if($request->hasFile('logo')){
             $formFields['logo'] = $request ->file('logo')->store('logos','public');
@@ -157,7 +156,7 @@ class ListingController extends Controller
             // if($listing->user_id != auth()->id()){
             //     abort(403,'Unauthorized Action');
             // }
-            $listing->delete();
+            $listing->delete(); 
             return redirect('')->with('message','Listing Deleted Successfully');
             
         }
