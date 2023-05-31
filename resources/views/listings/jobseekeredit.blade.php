@@ -4,9 +4,9 @@
             <div class="bg-gray-50 border border-gray-200 p-10 rounded max-w-lg mx-auto mt-24">
                 <header class="text-center">
                     <h2 class="text-2xl font-bold uppercase mb-1">
-                        Create a Gig
+                        Create a Listing
                     </h2>
-                    <p class="mb-4">Post a gig to find a developer</p>
+                    <p class="mb-4">Post a Listing to find a job</p>
                 </header>
 
                 <form method="POST" action="/job-seekers/{{ $jobseekerlisting['id'] }}" enctype="multipart/form-data">
@@ -84,32 +84,35 @@
                             @if (isset($jobseekerlisting))
                                 @foreach (json_decode($jobseekerlisting['educations']) as $key => $education)
                                     <div class="form-group">
-                                        <label for="education{{ $key + 1 }}">Education:</label>
-                                        <input class="flex border-gray-200 rounded p-2 w-full"
+                                        <label for="education{{ $key + 1 }}" class="font-medium">Education:</label>
+                                        <input
+                                            class="w-full border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                                             value="{{ $education }}" type="text" id="education{{ $key + 1 }}"
                                             name="educations[{{ $key }}]">
                                         @if ($key > 0)
-                                            <button type="button" class="remove-education">Remove</button>
+                                            <button type="button"
+                                                class="remove-education px-2 py-1 mt-1 text-white bg-red-500 rounded-md hover:bg-red-600">Remove</button>
                                         @endif
                                     </div>
                                 @endforeach
                             @else
                                 <div class="form-group">
-                                    <label for="education1">Education 1:</label>
-                                    <input type="text" id="education1" name="educations[]">
+                                    <label for="education1" class="font-medium">Education 1:</label>
+                                    <input type="text" id="education1" name="educations[]"
+                                        class="border-gray-200 rounded p-2 w-full">
                                 </div>
                             @endif
                             @error('educations')
-                                <p class='text-red-500 text-xs mt-0.5'>{{ $message }}</p>
+                                <p class="text-red-500 text-xs mt-0.5">{{ $message }}</p>
                             @enderror
                         </div>
-                        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded add-item"
+                        <button
+                            class="add-item w-full px-4 py-2 mt-4 text-white bg-blue-600 rounded-md hover:bg-blue-600"
                             type="button" id="add-education">Add Education</button>
                     </div>
 
                     <!-- JavaScript -->
                     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
                     <script type="text/javascript">
                         $(document).ready(function() {
                             var educationCount =
@@ -118,11 +121,14 @@
                             $('#add-education').click(function() {
                                 educationCount++;
 
-                                var newEducation = '<div class="form-group">' +
-                                    '<label for="education' + educationCount + '">Education ' + ':</label>' +
-                                    '<input type="text" id="education' + educationCount + '" name="educations[]">' +
-                                    '<button type="button" class="remove-education">Remove</button>' +
-                                    '</div>';
+                                var newEducation = `
+                                    <div class="form-group">
+                                        <label for="education${educationCount}" class="font-medium">Education ${educationCount}:</label>
+                                        <input type="text" id="education${educationCount}" name="educations[]"
+                                            class="border-gray-200 rounded p-2 w-full">
+                                        <button type="button" class="remove-education px-2 py-1 mt-1 text-white bg-red-500 rounded-md hover:bg-red-600">Remove</button>
+                                    </div>
+                                `;
 
                                 $('#educations').append(newEducation);
                             });
@@ -145,24 +151,97 @@
                         </select>
 
                     </div>
-                    <div class="mb-6">
-                        <label for="tags" class="inline-block text-lg mb-2">Skills</label>
-                        <input type="text" class="border border-gray-200 rounded p-2 w-full" name="tags"
-                            value="{{ $jobseekerlisting['tags'] }}" />
-                        @error('tags')
-                            <p class='text-red-500 text-xs mt-0.5'>{{ $message }}</p>
-                        @enderror
+                    @php
+                        $skills_array = json_decode($jobseekerlisting['skills'], true);
+                    @endphp
+                    <p class="inline-block text-lg mb-2">Skills</p>
+                    <br>
+                    <div class="bg-white shadow-md p-4 rounded-md ">
+                        <div id="skills">
+                            <div class="form-group ml-8">
+                                @foreach ($skills_array as $index => $skill)
+                                    <label for="skill{{ $index + 1 }}"></label>
+                                    <div class="relative  mt-3 w-80"">
+                                        <div class="flex">
+                                            <select id="skill{{ $index + 1 }}" name="skills[]"
+                                                class="block w-full py-2 pl-3 pr-10 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                                                <option value="laravel" {{ $skill === 'laravel' ? 'selected' : '' }}>
+                                                    Laravel</option>
+                                                <option value="flutter" {{ $skill === 'flutter' ? 'selected' : '' }}>
+                                                    Flutter</option>
+                                                <option value="javascript"
+                                                    {{ $skill === 'javascript' ? 'selected' : '' }}>JavaScript</option>
+                                                <option value="back-end" {{ $skill === 'back-end' ? 'selected' : '' }}>
+                                                    Back End</option>
+                                                <option value="front-end"
+                                                    {{ $skill === 'front-end' ? 'selected' : '' }}>Front End</option>
+                                                <option value="mobile-development"
+                                                    {{ $skill === 'mobile-development' ? 'selected' : '' }}>Mobile
+                                                    Development</option>
+                                                <option value="web-development"
+                                                    {{ $skill === 'web-development' ? 'selected' : '' }}>Web
+                                                    Development</option>
+                                                <option value="sql" {{ $skill === 'sql' ? 'selected' : '' }}>SQL
+                                                </option>
+                                            </select>
+                                            @if ($index > 0)
+                                                <button type="button"
+                                                    class="remove-skill  ml-2 text-red-500">X</button>
+                                            @endif
+                                        </div>
+
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="mb-6">
-                        <label for="desired_roles" class="inline-block text-lg mb-2">Desired Roles</label>
-                        <input type="text" class="border border-gray-200 rounded p-2 w-full" name="desired_roles"
-                            value="{{ $jobseekerlisting['desired_roles'] }}" />
-                        @error('desired_roles')
-                            <p class='text-red-500 text-xs mt-0.5'>{{ $message }}</p>
-                        @enderror
-                    </div>
-                    <div class="mb-6">
+                    <button type="button" id="add-skill"
+                        class="w-full px-4 py-2 mt-4 bg-indigo-500 hover:bg-indigo-600 text-white font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Add
+                        skill</button>
+
+                    <!-- JavaScript -->
+                    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
+                    <script type="text/javascript">
+                        $(document).ready(function() {
+                            var skillCount = {{ count($skills_array) }};
+
+                            $('#add-skill').click(function() {
+                                skillCount++;
+
+                                var newskill = '<div class="form-group ml-8">' +
+                                    '<label for="skill' + skillCount + '"></label>' +
+                                    '<div class="relative inline-block mt-3 w-80">' +
+                                    '<div class="flex">' +
+                                    '<select id="skill' + skillCount +
+                                    '" name="skills[]" class="block w-full py-2 pl-3 pr-10 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">' +
+                                    '<option value="laravel">Laravel</option>' +
+                                    '<option value="flutter">Flutter</option>' +
+                                    '<option value="sql">SQL</option>' +
+                                    '<option value="javascript">JavaScript</option>' +
+                                    ' <option value="back-end">Back End</option>' +
+                                    '<option value="front-end">Front End</option>' +
+                                    '<option value="mobile-development">Mobile Development</option>' +
+                                    ' <option value="web-development">Web Development</option>' +
+                                    '</select>' +
+                                    '<div class="ml-1"></div>' +
+                                    '<button type="button" class="remove-skill inline-block ml-1 text-red-500 ml-2">X</button>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</div>';
+
+                                $('#skills').append(newskill);
+                            });
+
+                            $('#skills').on('click', '.remove-skill', function() {
+                                $(this).parent().remove();
+                                skillCount--;
+                            });
+                        });
+                    </script>
+
+                    <div class="mb-6 mt-3">
                         <label for="cv" class="inline-block text-lg mb-2">
                             CV
                         </label>

@@ -11,6 +11,9 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="//unpkg.com/alpinejs" defer></script>
+    <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
     <script>
         tailwind.config = {
             theme: {
@@ -49,13 +52,41 @@
             @auth
                 <p>Welcome, {{ auth()->user()->name }}!</p>
                 <li>
-                    <a href="/listings/manage" class="hover:text-laravel"><i class="fa-solid fa-gear"></i>My Listings</a>
+                    @php
+                        $route = auth()->user()->role;
+                        if ($route == 'employer') {
+                            $route = '/applications';
+                        } elseif ($route == 'job-seeker') {
+                            $route = '/offers';
+                        }
+                    @endphp
+                    @if (auth()->user()->role == 'employer')
+                        <a href={{ $route }} class="hover:text-laravel"><i class="fa-solid fa-book "></i>
+                            Applications</a>
+                    @elseif (auth()->user()->role == 'job-seeker')
+                        <a href={{ $route }} class="hover:text-laravel"><i class="fa-solid fa-envelope"></i>
+                            Offers</a>
+                    @else
+                        <p>Else</p>
+                    @endif
+                </li>
+                <li>
+                    @php
+                        $route = auth()->user()->role;
+                        if ($route == 'employer') {
+                            $route = '/listings/manage';
+                        } elseif ($route == 'job-seeker') {
+                            $route = '/listings/jobseekermanage';
+                        }
+                    @endphp
+                    <a href={{ $route }} class="hover:text-laravel"><i class="fa-solid fa-gear"></i> My Listings</a>
+
                 </li>
                 <li>
                     <form class='inline' method='POST' action='/logout'>
                         @csrf
                         <button>
-                            <i class="fa-solid fa-door-closed"></i>Logout
+                            <i class="fa-solid fa-door-closed"></i> Logout
                         </button>
                     </form>
                 </li>
@@ -64,7 +95,8 @@
                     <a href="/register" class="hover:text-laravel"><i class="fa-solid fa-user-plus"></i> Register</a>
                 </li> --}}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('newregister') }}">{{ __('Register') }}</a>
+                    <a class="nav-link" href="{{ route('newregister') }}"><i class="fa-solid fa-arrow-right-to-bracket"></i>
+                        {{ __('Register') }}</a>
                 </li <li>
                 <a href="/login" class="hover:text-laravel"><i class="fa-solid fa-arrow-right-to-bracket"></i>
                     Login</a>

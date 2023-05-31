@@ -34,15 +34,15 @@
                             <p class='text-red-500 text-xs mt-0.5'>{{ $message }}</p>
                         @enderror
                     </div>
-                    {{-- <div class="mb-6">
+                     <div class="mb-6">
                         <button type="submit" class="bg-laravel text-white rounded py-2 px-4 hover:bg-black">
                             Sign In
                         </button>
-                    </div> --}}
+                    </div> 
 
                     <p>
                         Dont have an account?
-                        <a href="/register" class="text-laravel">Register</a>
+                        <a href="/newregister" class="text-laravel">Register</a>
                     </p>
             </div>
             </form>

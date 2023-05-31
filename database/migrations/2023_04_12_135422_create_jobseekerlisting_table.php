@@ -19,13 +19,13 @@ return new class extends Migration
             $table->string('title');
             $table->string('name');
             $table->boolean('is_active')->default(true);
-            $table->string('tags');
+            $table->json('skills');
             $table->json('educations')->nullable();
             $table->string('experience');
             $table->string('location');
             $table->string('email');
+            $table->boolean('applysearch')->default(false);
             $table->string('cv')->nullable();
-            $table->string('desired_roles');
             $table->longtext('description');
             $table->timestamps();
         });
