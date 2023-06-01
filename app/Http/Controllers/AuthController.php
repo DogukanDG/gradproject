@@ -15,6 +15,7 @@ use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 
 class AuthController extends Controller
@@ -24,6 +25,7 @@ class AuthController extends Controller
     {
         $data = $request->validate([
             'name' => ['required','min:3', Rule::unique('users', 'name')],
+            'last_name' => ['required','min:3'],
             'role'=>['required'],
             'email' => ['required', Rule::unique('users', 'email')],
             'phone'=>['required', Rule::unique('users', 'phone')],
@@ -33,18 +35,19 @@ class AuthController extends Controller
         //Laravel function to encrypt the message
         /* Get credentials from .env */
         
-        $data['password'] = bcrypt($data['password']);
-        $token = getenv("TWILIO_AUTH_TOKEN");
-        $twilio_sid = getenv("TWILIO_SID");
-        $twilio_verify_sid = getenv("TWILIO_VERIFY_SID");
-        $twilio = new Client($twilio_sid, $token);
-        $twilio->verify->v2->services($twilio_verify_sid)
-            ->verifications
+            $data['password'] = bcrypt($data['password']);
+            $token = getenv("TWILIO_AUTH_TOKEN");
+            $twilio_sid = getenv("TWILIO_SID");
+            $twilio_verify_sid = getenv("TWILIO_VERIFY_SID");
+            $twilio = new Client($twilio_sid, $token);
+            $twilio->verify->v2->services($twilio_verify_sid)
+             ->verifications
             ->create($data['phone'], "sms");
         
-        User::create($data);
-        //return redirect()->route('verify')->with(['phone'=>$this->data['phone']]);
-        return redirect()->route('verify')->with(['phone'=>$data['phone']]);
+        // User::create($data);
+        // //return redirect()->route('verify')->with(['phone'=>$this->data['phone']]);
+        Session::put('userInfo', $data);
+        return redirect()->route('verify')->with(['userInfo'=>$data]);
     }
     protected function verify(Request $request)
     {
@@ -52,8 +55,8 @@ class AuthController extends Controller
             'verification_code' => ['required', 'numeric'],
             'phone' => ['required', 'string'],
         ]);
+
         
-        /* Get credentials from .env */
         $token = getenv("TWILIO_AUTH_TOKEN");
         $twilio_sid = getenv("TWILIO_SID");
         $twilio_verify_sid = getenv("TWILIO_VERIFY_SID");
@@ -64,7 +67,14 @@ class AuthController extends Controller
         
         if ($verification->valid) {
              try{
-                //User::create();
+                $user = new User();
+                $user->name = $request['name'];
+                $user->last_name = $request['last_name'];
+                $user->role = $request['role'];
+                $user->email = $request['email'];
+                $user->phone = $request['phone'];
+                $user->password = bcrypt($request['password']);
+                $user->save();
              }
              catch(Exception $e){
                  dd($e);

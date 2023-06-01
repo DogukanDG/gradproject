@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('applicationsoffers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('sender_id');
-            $table->unsignedInteger('receiver_id');
+            $table->unsignedInteger('sender_id')->constrained()->onDelete('cascade');
+            $table->unsignedInteger('receiver_id')->constrained()->onDelete('cascade');
             $table->string('sender_email');
             $table->string('reciever_email');
             $table->boolean('is_active')->default(true);
