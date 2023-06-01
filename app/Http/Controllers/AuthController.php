@@ -23,7 +23,7 @@ class AuthController extends Controller
     protected function create(Request $request)
     {
         $data = $request->validate([
-            'name' => ['required','min:3'],
+            'name' => ['required','min:3', Rule::unique('users', 'name')],
             'role'=>['required'],
             'email' => ['required', Rule::unique('users', 'email')],
             'phone'=>['required', Rule::unique('users', 'phone')],

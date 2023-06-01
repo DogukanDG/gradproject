@@ -1,4 +1,5 @@
  <x-layout>
+
      <div class="container mx-auto sm:px-4">
          <div class="flex flex-wrap  justify-center">
              <div class="md:w-2/3 pr-4 pl-4">
@@ -17,7 +18,7 @@
                                          name="name" value="{{ old('name') }}" required autocomplete="name"
                                          autofocus>
                                      @error('name')
-                                         <span class="hidden mt-1 text-sm text-red" role="alert">
+                                         <span class="text-red-500 text-xs mt-0.5" role="alert">
                                              <strong>{{ $message }}</strong>
                                          </span>
                                      @enderror
@@ -30,18 +31,17 @@
                                      <input id="phone" type="tel"
                                          class="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-gray-800 border border-gray-200 rounded @error('phone') bg-red-700 @enderror"
                                          name="phone" value="{{ old('phone') }}" required>
-                                     @error('phone')
-                                         <span class="hidden mt-1 text-sm text-red" role="alert">
-                                             <strong>{{ $message }}</strong>
-                                         </span>
-                                     @enderror
                                  </div>
+                                 @error('phone')
+                                     <span class="text-red-500 text-xs mt-0.5" role="alert">
+                                         <strong>{{ $message }}</strong>
+                                     </span>
+                                 @enderror
                              </div>
                              <div class="mb-6">
                                  <label for="email" class="inline-block text-lg mb-2">Email</label>
                                  <input value="{{ old('email') }}" type="email"
                                      class="border border-gray-200 rounded p-2 w-full" name="email" />
-                                 <!-- Error Example -->
                                  @error('email')
                                      <p class='text-red-500 text-xs mt-0.5'>{{ $message }}</p>
                                  @enderror
@@ -63,12 +63,16 @@
                                          class="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-gray-800 border border-gray-200 rounded @error('password') bg-red-700 @enderror"
                                          name="password" required autocomplete="new-password">
                                      @error('password')
-                                         <span class="hidden mt-1 text-sm text-red" role="alert">
+                                         <span class="text-red-500 text-xs mt-0.5" role="alert">
                                              <strong>{{ $message }}</strong>
                                          </span>
                                      @enderror
                                  </div>
                              </div>
+                             {{-- <div>
+                                 <label for="phone">Phone Number</label>
+                                 <input id="phone" type="tel" name="phone" required>
+                             </div> --}}
                              <div class="mb-4 flex flex-wrap ">
                                  <label for="password-confirm"
                                      class="md:w-1/3 pr-4 pl-4 pt-2 pb-2 mb-0 leading-normal md:text-right">{{ __('Confirm Password') }}</label>
@@ -92,6 +96,26 @@
              </div>
          </div>
      </div>
+     <script>
+         var input = document.querySelector("#phone");
+         var iti = window.intlTelInput(input, {
+             initialCountry: "us" // Set your default country code here
+         });
+
+         // Get the selected country code and update the phone number input
+         input.addEventListener("change", function() {
+             var countryCode = iti.getSelectedCountryData().dialCode;
+             var phoneNumber = input.value;
+
+             // Check if the phone number already includes the country code
+             if (phoneNumber.startsWith("+" + countryCode)) {
+                 return; // No need to modify the input value
+             }
+
+             var formattedPhoneNumber = "+" + countryCode + phoneNumber;
+             input.value = formattedPhoneNumber;
+         });
+     </script>
      {{-- <main>
          <div class="mx-4">
              <div class="bg-gray-50 border border-gray-200 p-10 rounded max-w-lg mx-auto mt-24">
