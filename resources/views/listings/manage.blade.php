@@ -52,6 +52,13 @@
                                             Search</button>
                                     </form>
                                 </td>
+                                <td class="px-4 py-8 border-t border-b border-gray-300 text-lg">
+                                    <form method="POST" action="/listings/{{ $listing['id'] }}/renew">
+                                        @csrf {{-- This is for preventing people from submiting a form from their website to yours --}}
+                                        @method('PUT')
+                                        <button class="text-black-500"><i class="fa-solid fa-refresh"></i>Renew</button>
+                                    </form>
+                                </td>
                             </tr>
                         @endforeach
                         @if (count($listings) == 0)

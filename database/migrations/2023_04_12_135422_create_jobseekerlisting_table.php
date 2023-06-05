@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->string('name');
+            $table->string('last_name');
             $table->boolean('is_active')->default(true);
             $table->json('skills');
             $table->json('educations')->nullable();
@@ -25,6 +26,7 @@ return new class extends Migration
             $table->string('location');
             $table->string('email');
             $table->boolean('applysearch')->default(false);
+            $table->dateTime('expiration_date')->nullable();
             $table->string('cv')->nullable();
             $table->longtext('description');
             $table->timestamps();

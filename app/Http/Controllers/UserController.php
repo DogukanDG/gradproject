@@ -53,6 +53,7 @@ class UserController extends Controller
 
     //authenticate
     public function authenticate(Request $request){
+        //dd($request->all());
         $formFields = $request->validate([
             'email' => ['required',  'email'],
             'password' => 'required',
@@ -60,7 +61,6 @@ class UserController extends Controller
         ]);
         if(auth()->attempt($formFields)){
                 $request->session()->regenerate();
-
                 return redirect('/')->with('Logged In Succesfully ');
         }
         return back()->withErrors(['email' => 'Invalid Credentials'])->onlyInput('email');

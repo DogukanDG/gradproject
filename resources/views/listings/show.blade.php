@@ -8,7 +8,7 @@
         <div class="bg-gray-50 border border-gray-200 p-10 rounded">
             <div class="flex flex-col items-center justify-center text-center">
                 <img class="w-48 mr-6 mb-6 rounded-full"
-                    src="{{ $listing['logo'] ? asset('storage/' . $listing['logo']) : asset('/images/no-image.png') }}"
+                    src="{{ $listing['logo'] ? asset('storage/images/' . $listing['logo']) : asset('/images/no-image.png') }}"
                     alt="" />
                 <h3 class="text-2xl mb-2">{{ $listing['title'] }}</h3>
                 <div class="text-xl font-bold mb-4">{{ $listing['name'] }}</div>
@@ -142,4 +142,32 @@
             <div></div>
         @endif --}}
     </div>
+    <div class="max-w-lg mx-auto bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-semibold">Laravel Developer</h2>
+        <img src="/images/no-image.png" alt="Logo" class="mt-4 w-20 h-20 rounded-full">
+        <div class="flex items-center mt-4">
+
+            <span class="bg-gray-200 text-gray-800 text-sm px-2 py-1 rounded-full mr-2">laravel,flutter</span>
+
+        </div>
+        <div class="mt-4">
+            <h4 class="text-lg font-semibold">Person in Need</h4>
+            <p>4</p>
+        </div>
+        <div class="mt-4">
+            <h4 class="text-lg font-semibold">Contact Information</h4>
+            <p>
+                <strong>Number:</strong> +90432323232<br>
+                <strong>Name:</strong> Dogukan Dagtekin<br>
+                <strong>Location:</strong> Mağusa<br>
+                <strong>Email:</strong> dogukan@gmail.com
+            </p>
+        </div>
+        <div class="mt-4">
+            <h4 class="text-lg font-semibold">Description</h4>
+            <p>this is a description this is a description this is a descriptionthis is a descriptionthis is a
+                descriptionthis is a descriptionthis is a descriptionthis is a description</p>
+        </div>
+    </div>
+
 </x-layout>

@@ -23,14 +23,18 @@ class ListingController extends Controller
 
     public function index(){
         $user = auth()->user();
-        
-    if ($user && $user->role === 'job-seeker') {
+        if(!$user){
+            return view('listings.index', ['listings' => Listing::latest()->filter(request(['skills', 'search']))->simplePaginate(6),'sortedlisting'=>[]]);
+        }
+        $emptyCondition = JobSeekerListing::where('user_id', $user->id)->get();
+    if ($user->role === 'job-seeker' && !($emptyCondition->isEmpty())) {
         $jobListings = Listing::all();
         $employerSkills = JobSeekerListing::where('user_id', $user->id)
             ->where('applysearch', true)
             ->get();
-        $jobSeekerTargetSkillsArray = $employerSkills[0]->getAttributes()['skills'];
-        $matches = [];
+         if(!empty($employerSkills)){
+            $jobSeekerTargetSkillsArray = $employerSkills[0]->getAttributes()['skills'];
+            $matches = [];
         foreach ($jobListings as $jobListing) {
             $matchedSkills = array_intersect(
                 json_decode($jobSeekerTargetSkillsArray),
@@ -50,9 +54,11 @@ class ListingController extends Controller
         usort($matches, function ($a, $b) {
             return $b['match_score'] <=> $a['match_score'];
         });
-        
         return view('listings.index', ['sortedlisting' => $matches, 'listings' => []]);
-    } else {
+         }else{
+            return view('listings.index', ['listings' => Listing::latest()->filter(request(['skills', 'search']))->simplePaginate(6),'sortedlisting'=>[]]);
+         }
+    }else{
         return view('listings.index', ['listings' => Listing::latest()->filter(request(['skills', 'search']))->simplePaginate(6),'sortedlisting'=>[]]);
     }
         
@@ -98,10 +104,21 @@ class ListingController extends Controller
         if($request->hasFile('logo')){
             $formFields['logo'] = $request ->file('logo')->store('logos','public');
         }
+        
         $formFields['skills'] = json_encode($skills);
         $formFields['user_id'] = auth()->id();
         $formField['is_active'] = true;
-        Listing::create($formFields);
+        $formFields['expiration_date'] = now()-> addDays(5);
+        $userListings = Listing::where('user_id', auth()->id())->get(); // Retrieve other listings created by the same user
+        
+        foreach ($userListings as $listing) {
+            $listing->applysearch = 0; // Set apply_search to 0 for other listings
+            $listing->save();
+        }
+        
+        $listing = Listing::create($formFields);
+        $listing->applysearch = 1; // Set apply_search to 1 for the newly created listing
+        $listing->save();
         return redirect('/')->with('message','Listing Created');
     }
     public function edit(Listing $listing){
@@ -128,6 +145,7 @@ class ListingController extends Controller
         }
         $formFields['skills'] = json_encode($skills);
         $formFields['user_id'] = auth()->id();
+        $formFields['expiration_date'] = now()-> addDays(5);
         $listing->update($formFields);
         
         return redirect()->back()->with('message','Listing Updated!');
@@ -156,10 +174,25 @@ class ListingController extends Controller
             // if($listing->user_id != auth()->id()){
             //     abort(403,'Unauthorized Action');
             // }
-            $listing->delete(); 
-            return redirect('')->with('message','Listing Deleted Successfully');
+            $isApplySearchOne = $listing->applysearch == 1;
+            $listing->delete();
+            
+            if ($isApplySearchOne) {
+                $latestListing = Listing::latest()->first();
+                
+                if ($latestListing) {
+                    $latestListing->applysearch = true;
+                    $latestListing->save();
+                }
+            }
+            
+            return redirect('')->with('message', 'Listing Deleted Successfully');
             
         }
+        public function renew(Listing $listing){
+            $listing->update(['expiration_date'=>now()->addDays()]);
+            return redirect()->back()->with('message','Listing Renewed!');
+         }
         //Manage listings
         public function manage(){
             return view('listings.manage', ['listings'=>auth()

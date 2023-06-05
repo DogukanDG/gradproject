@@ -12,14 +12,20 @@
                                 {{ session('error') }}
                             </div>
                         @endif
-                        Please enter the OTP sent to your number: {{ session('phone') }}
+                        Please enter the OTP sent to your number: {{ session('userInfo')['phone'] }}
                         <form action="{{ route('verify') }}" method="post">
                             @csrf
+                            <input type="hidden" name="name" value="{{ session('userInfo')['name'] }}">
+                            <input type="hidden" name="last_name" value="{{ session('userInfo')['last_name'] }}">
+                            <input type="hidden" name="role" value="{{ session('userInfo')['role'] }}">
+                            <input type="hidden" name="email" value="{{ session('userInfo')['email'] }}">
+                            <input type="hidden" name="password" value="{{ session('userInfo')['password'] }}">
+
                             <div class="mb-4 flex flex-wrap ">
                                 <label for="verification_code"
                                     class="md:w-1/3 pr-4 pl-4 pt-2 pb-2 mb-0 leading-normal md:text-right">{{ __('Phone Number') }}</label>
                                 <div class="md:w-1/2 pr-4 pl-4">
-                                    <input type="hidden" name="phone" value="{{ session('phone') }}">
+                                    <input type="hidden" name="phone" value="{{ session('userInfo')['phone'] }}">
                                     <input id="verification_code" type="tel"
                                         class="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-gray-800 border border-gray-200 rounded @error('verification_code') bg-red-700 @enderror"
                                         name="verification_code" value="{{ old('verification_code') }}" required>

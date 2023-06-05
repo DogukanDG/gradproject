@@ -22,6 +22,7 @@ return new class extends Migration
             $table->json('skills')->nullable();
             $table->unsignedInteger('person_need')->default(1);
             $table->string('name');
+            $table->dateTime('expiration_date')->nullable();
             $table->string('location');
             $table->string('email');
             $table->boolean('applysearch')->default(false);
