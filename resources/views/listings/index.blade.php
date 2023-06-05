@@ -2,21 +2,28 @@
     @include('partials._search')
 
     @if (!empty($sortedlisting))
-        @foreach ($sortedlisting as $match)
-            <x-listing-card :listing="$match['listing']" />
-        @endforeach
+        <div class="grid grid-cols-2">
+            @foreach ($sortedlisting as $match)
+                @if ($match->is_active)
+                    <x-listing-card :listing="$match['listing']" />
+                @endif
+            @endforeach
+        </div>
     @elseif (!empty($listings))
-        @foreach ($listings as $listing)
-            <x-listing-card :listing="$listing" />
-        @endforeach
+        <div class="grid grid-cols-2 ">
+            @foreach ($listings as $listing)
+                @if ($listing->is_active)
+                    <x-listing-card :listing="$listing" />
+                @endif
+            @endforeach
+        </div>
     @else
         <div class="content-center">
             <div class="flex">
-                <p class="text-xl">Listings Found</p>
+                <p class="text-xl">Listings Not Found</p>
             </div>
         </div>
     @endif
-
     <div class="lg:grid lg:grid-cols-2 gap-4 space-y-4 md:space-y-0 mx-4">
         <div class="mt-6 p-4 justify-between">
             @if ($sortedlisting)

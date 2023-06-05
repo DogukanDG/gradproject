@@ -1,23 +1,24 @@
 <x-layout>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg m-16">
-        @if ($applications)
-            <table class="w-full text-sm text-left text-gray-500">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                    <tr>
-                        <th scope="col" class="px-6 py-3">
-                            Sender
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Contact Email
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Phone Number
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Description
-                        </th>
-                    </tr>
-                </thead>
+
+        <table class="w-full text-sm text-left text-gray-500">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                        Sender
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Contact Email
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Phone Number
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Description
+                    </th>
+                </tr>
+            </thead>
+            @if ($applications->isNotEmpty())
                 @foreach ($applications as $application)
                     @if ($application->is_active == true)
                         <tbody>
@@ -62,12 +63,13 @@
                         </tbody>
                     @endif
                 @endforeach
-            </table>
-        @else
-            <div>
-                <p>You dont have any applications</p>
-            </div>
+            @else
+                <tbody>
+                    <div class="flex items-center justify-center h-screen">
+                        <p>NO LISTING</p>
+                    </div>
+                </tbody>
+            @endif
+        </table>
     </div>
-
-    @endif
 </x-layout>

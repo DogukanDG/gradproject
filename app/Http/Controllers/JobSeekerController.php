@@ -64,14 +64,18 @@ class JobSeekerController extends Controller
     public function index()
     {
     $user = auth()->user();
-    
-    if ($user && $user->role === 'employer') {
+    if(!$user){
+        return view('listings.jobseekerindex', ['jobseekerlistings' => JobSeekerListing::latest()->filter(request(['skills', 'search']))->simplePaginate(6),'sortedlisting'=>[]]);
+    }
+    $emptyCondition = Listing::where('user_id', $user->id)->get();
+    if ($user->role === 'employer' && !($emptyCondition->isEmpty())) {
         $jobListings = JobSeekerListing::all();
         $jobseekerSkills = Listing::where('user_id', $user->id)
             ->where('applysearch', true)
             ->get();
-        $employeeTargetSkillsArray = $jobseekerSkills[0]->getAttributes()['skills'];
-        $matches = [];
+        if(!empty($jobseekerSkills)){
+            $employeeTargetSkillsArray = $jobseekerSkills[0]->getAttributes()['skills'];
+            $matches = [];
         
         foreach ($jobListings as $jobListing) {
             $matchedSkills = array_intersect(
@@ -93,8 +97,11 @@ class JobSeekerController extends Controller
             return $b['match_score'] <=> $a['match_score'];
         });
 
-
         return view('listings.jobseekerindex', ['sortedlisting' => $matches, 'jobseekerlistings' => []]);
+        }else{
+            return view('listings.jobseekerindex', ['jobseekerlistings' => JobSeekerListing::latest()->filter(request(['skills', 'search']))->simplePaginate(6),'sortedlisting'=>[]]);
+        }
+        
         } else {
         return view('listings.jobseekerindex', ['jobseekerlistings' => JobSeekerListing::latest()->filter(request(['skills', 'search']))->simplePaginate(6),'sortedlisting'=>[]]);
     }
@@ -142,9 +149,19 @@ class JobSeekerController extends Controller
         // dd($formFields['educations'],$array[0]);
         $formFields['user_id'] = auth()->id();
         $formFields['name'] = auth()->user()->name;
+        $formFields['last_name'] = auth()->user()->last_name;
         $formFields['email'] = auth()->user()->email;
         
-        JobSeekerListing::create($formFields);
+        $userListings = JobSeekerListing::where('user_id', auth()->id())->get(); // Retrieve other listings created by the same user
+        
+        foreach ($userListings as $listing) {
+            $listing->applysearch = 0; 
+            $listing->save();
+        }
+
+        $jobseekerlisting = JobSeekerListing::create($formFields);
+        $jobseekerlisting->applysearch = 1; 
+        $jobseekerlisting->save();
         return redirect('/')->with('message','Listing Created');
     }
 
@@ -190,10 +207,22 @@ class JobSeekerController extends Controller
     }
     
     public function delete(JobSeekerListing $jobseekerlisting){
-        // if($listing->user_id != auth()->id()){
-        //     abort(403,'Unauthorized Action');
-        // }
+         if($jobseekerlisting->user_id != auth()->id()){
+            abort(403,'Unauthorized Action');
+         }
+         
+        $isApplySearchOne = $jobseekerlisting->applysearch == 1;
         $jobseekerlisting->delete();
+        
+        if ($isApplySearchOne) {
+            $latestListing = JobSeekerListing::latest()->first();
+            
+            if ($latestListing) {
+                $latestListing->applysearch = true;
+                $latestListing->save();
+            }
+        }
+
         return redirect('')->with('message','Listing Deleted Successfully');
     }
 

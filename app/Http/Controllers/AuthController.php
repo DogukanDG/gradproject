@@ -30,12 +30,9 @@ class AuthController extends Controller
             'email' => ['required', Rule::unique('users', 'email')],
             'phone'=>['required', Rule::unique('users', 'phone')],
             'password' => 'required|confirmed|min:6',
-    
         ]);
         //Laravel function to encrypt the message
         /* Get credentials from .env */
-        
-            $data['password'] = bcrypt($data['password']);
             $token = getenv("TWILIO_AUTH_TOKEN");
             $twilio_sid = getenv("TWILIO_SID");
             $twilio_verify_sid = getenv("TWILIO_VERIFY_SID");
@@ -55,8 +52,16 @@ class AuthController extends Controller
             'verification_code' => ['required', 'numeric'],
             'phone' => ['required', 'string'],
         ]);
+        $userInfo = [
+            'name' => $request['name'],
+            'last_name' => $request['last_name'],
+            'role' => $request['role'],
+            'email' => $request['email'],
+            'phone' => $request['phone'],
+            'password' => $request['password']
+        ];
 
-        
+        session(['userInfo' => $userInfo]);
         $token = getenv("TWILIO_AUTH_TOKEN");
         $twilio_sid = getenv("TWILIO_SID");
         $twilio_verify_sid = getenv("TWILIO_VERIFY_SID");
@@ -66,27 +71,20 @@ class AuthController extends Controller
             ->create(['code'=>(string)$verifydata['verification_code'], 'to' => (string) $verifydata['phone']]);
         
         if ($verification->valid) {
-             try{
-                $user = new User();
-                $user->name = $request['name'];
-                $user->last_name = $request['last_name'];
-                $user->role = $request['role'];
-                $user->email = $request['email'];
-                $user->phone = $request['phone'];
-                $user->password = bcrypt($request['password']);
-                $user->save();
-             }
-             catch(Exception $e){
-                 dd($e);
-             }finally{
-                 $user = tap(User::where('phone', $verifydata['phone']))->update(['isVerified' => true]);
-                /* Authenticate user */
+            $user = User::create([
+                'name' => $request['name'],
+                'last_name' => $request['last_name'],
+                'role' => $request['role'],
+                'email' => $request['email'],
+                'phone' => $request['phone'],
+                'password' => bcrypt($request['password']),
+                'isVerified' => 1
+            ]);
                 Auth::login($user->first());
                 return redirect('/')->with('Phone number verified Logged In Succesfully ');
              }
-            
-        }
-        return back()->with(['phone' => $verifydata['phone'], 'error' => 'Invalid verification code entered!']);
+    
+        return back()->with(['phone' => $verifydata['phone'], 'error' => 'Invalid verification code entered!','userInfo'=>$userInfo]);
     }
     
 }

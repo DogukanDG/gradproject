@@ -30,7 +30,6 @@
                                      Employer
                                  </span>
                              </button>
-
                              <button id="jobSeekerBtn" onclick="updateRole('job-seeker', this)"
                                  class="flex justify-center w-full px-6 py-3 mt-4 border rounded-lg md:mt-0 md:w-auto md:mx-2 focus:outline-none bg-gray-200 text-gray-500">
                                  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none"
