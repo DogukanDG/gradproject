@@ -1,5 +1,14 @@
 <x-layout>
     @include('partials._search')
+    <div class="mx-10">
+
+        <h1 class="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl"><span
+                class="text-transparent bg-clip-text bg-gradient-to-r to-sky-300 from-sky-700">Employer Listings</span>
+        </h1>
+        <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">Here Are All the
+            Employers Listings That Is Currently Active.
+        </p>
+    </div>
 
     @if (!empty($sortedlisting))
         <div class="grid grid-cols-2">

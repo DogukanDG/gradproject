@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('location');
             $table->string('email');
             $table->boolean('applysearch')->default(false);
+            $table->dateTime('expiration_date')->nullable();
             $table->string('cv')->nullable();
             $table->longtext('description');
             $table->timestamps();

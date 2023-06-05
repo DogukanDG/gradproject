@@ -48,10 +48,11 @@
         </div>
     </nav> --}}
 
-    <nav class="bg-white border-gray-200 ">
+    <nav class="bg-white  w-full border-b border-gray-300 ">
         <div class="max-w-screen flex flex-wrap items-center justify-between mx-10 p-4">
             <a href="/" class="flex items-center">
-                <img src="{{ asset('images/logo3.png') }}" class="w-12 h-12 mr-3" alt="WorkLink Logo" />
+                <img src="{{ asset('/images/homepageimages/worklink1.png') }}" class="w-12 h-12 mr-3"
+                    alt="WorkLink Logo" />
                 <span class="self-center text-2xl font-semibold whitespace-nowrap">WorkLink</span>
             </a>
             <button data-collapse-toggle="navbar-multi-level" type="button"

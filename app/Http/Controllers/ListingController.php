@@ -108,7 +108,7 @@ class ListingController extends Controller
         $formFields['skills'] = json_encode($skills);
         $formFields['user_id'] = auth()->id();
         $formField['is_active'] = true;
-
+        $formFields['expiration_date'] = now()-> addDays(5);
         $userListings = Listing::where('user_id', auth()->id())->get(); // Retrieve other listings created by the same user
         
         foreach ($userListings as $listing) {
@@ -145,6 +145,7 @@ class ListingController extends Controller
         }
         $formFields['skills'] = json_encode($skills);
         $formFields['user_id'] = auth()->id();
+        $formFields['expiration_date'] = now()-> addDays(5);
         $listing->update($formFields);
         
         return redirect()->back()->with('message','Listing Updated!');
@@ -188,6 +189,10 @@ class ListingController extends Controller
             return redirect('')->with('message', 'Listing Deleted Successfully');
             
         }
+        public function renew(Listing $listing){
+            $listing->update(['expiration_date'=>now()->addDays()]);
+            return redirect()->back()->with('message','Listing Renewed!');
+         }
         //Manage listings
         public function manage(){
             return view('listings.manage', ['listings'=>auth()

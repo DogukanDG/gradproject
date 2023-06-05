@@ -12,6 +12,7 @@ use App\Models\JobSeekerListing;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use function PHPUnit\Framework\matches;
+use Illuminate\Support\Facades\Storage;
 
 class JobSeekerController extends Controller
 {
@@ -151,6 +152,7 @@ class JobSeekerController extends Controller
         $formFields['name'] = auth()->user()->name;
         $formFields['last_name'] = auth()->user()->last_name;
         $formFields['email'] = auth()->user()->email;
+        $formFields['expiration_date'] = now()-> addDays(5);
         
         $userListings = JobSeekerListing::where('user_id', auth()->id())->get(); // Retrieve other listings created by the same user
         
@@ -190,6 +192,7 @@ class JobSeekerController extends Controller
             'location' => 'required',
             'experience' => 'required',
             'description' => 'required',
+            'cv'=>'required|mimes:pdf|max:2048',
         ]);
         $formFields['skills'] = json_encode($skills);
         if($request->hasFile('cv')){
@@ -202,9 +205,17 @@ class JobSeekerController extends Controller
         $formFields['user_id'] = auth()->id();
         $formFields['name'] = auth()->user()->name;
         $formFields['email'] = auth()->user()->email;
+        $formFields['expiration_date'] = now()-> addDays(5);
         $jobseekerlisting->update($formFields);
         return redirect('/')->with('message','Listing Edited');
     }
+    
+    
+    public function downloadcv(JobSeekerListing $jobseekerlisting)
+    {   
+       return response()->download(public_path('storage/'. $jobseekerlisting['cv']));
+   }
+
     
     public function delete(JobSeekerListing $jobseekerlisting){
          if($jobseekerlisting->user_id != auth()->id()){
@@ -225,7 +236,10 @@ class JobSeekerController extends Controller
 
         return redirect('')->with('message','Listing Deleted Successfully');
     }
-
+    public function renew(JobSeekerListing $jobseekerlisting){
+        $jobseekerlisting->update(['expiration_date'=>now()->addDays()]);
+        return redirect()->back()->with('message','Listing Renewed!');
+     }
     //ALSO ADD MANAGE LİSTİNGS HERE
     public function manage(){
         return view('listings.managejobseekerlistings', ['jobseekerlistings'=>auth()

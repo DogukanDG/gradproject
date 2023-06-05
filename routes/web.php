@@ -54,6 +54,15 @@ Route::put('/listings/{listing}/applysearch', [ListingController::class, 'applys
 //*Edit submit to update listing
 Route::delete('/listings/{listing}',[ListingController::class,'delete'])->middleware('auth');
 
+//*Renew Listings
+Route::put('/listings/{listing}/renew',[ListingController::class,'renew'])->middleware('auth');
+
+Route::put('/job-seekers/{jobseekerlisting}/renew',[JobSeekerController::class,'renew'])->middleware('auth');
+
+//*DOWNLOAD CV
+//Route::get('/job-seekers/{jobseekerlisting}/download', [JobSeekerController::class, 'downloadcv']);
+Route::get('/job-seekers/{jobseekerlisting}/download', [JobSeekerController::class, 'downloadcv'])->name('jobseeker.download');
+
 //*Store Listing Data
 Route::post('/listings',[ListingController::class,'store']);
 

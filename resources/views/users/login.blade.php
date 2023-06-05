@@ -8,10 +8,9 @@
                         <h2 class="text-2xl font-bold text-white sm:text-3xl">WorkLink</h2>
 
                         <p class="max-w-xl mt-3 text-gray-300">
-                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. In
-                            autem ipsa, nulla laboriosam dolores, repellendus perferendis libero suscipit nam
-                            temporibus
-                            molestiae
+                            At Work Link, we understand the challenges faced by both job seekers and employers in
+                            today's competitive market. That's why we've developed a cutting-edge platform that
+                            revolutionizes the way connections are made.
                         </p>
                     </div>
                 </div>
@@ -21,7 +20,8 @@
                 <div class="flex-1">
                     <div class="text-center">
                         <div class="flex justify-center mx-auto">
-                            <img class="w-auto h-7 sm:h-8" src="https://merakiui.com/images/logo.svg" alt="">
+                            <img class="w-auto h-20 sm:h-20" src="{{ asset('/images/homepageimages/worklink1.png') }}"
+                                alt="">
                         </div>
 
                         <p class="mt-3 text-gray-500">Sign in to access your account</p>
