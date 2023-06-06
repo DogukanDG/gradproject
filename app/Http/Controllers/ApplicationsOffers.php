@@ -8,6 +8,8 @@ use App\Models\Listing;
 use App\Models\Applications;
 use Illuminate\Http\Request;
 use App\Models\JobSeekerListing;
+use App\Mail\OfferApplicationMail;
+use Illuminate\Support\Facades\Mail;
 
 class ApplicationsOffers extends Controller
 {
@@ -87,8 +89,12 @@ class ApplicationsOffers extends Controller
         $jobSeekerListing->is_active = false;
         $offerfind->save();
         $jobSeekerListing->save();
+        
+        Mail::to($offerfind['sender_email'])->send(new OfferApplicationMail($offerfind));
+        
         return redirect('/offers')->with('message','Offer Accepted');
     }
+    
     public function offerdecline(Offers $offer){
         $offer->delete(); 
         return redirect('/offers')->with('message','Offer Declined');
@@ -109,7 +115,7 @@ class ApplicationsOffers extends Controller
             
         }
         //*IF WE WANT TO STORE IT FOR THE USER JUST MAKE IT IS_ACTIVE to FALSE 
-        
+        Mail::to($applicationfind['sender_email'])->send(new OfferApplicationMail($applicationfind));
         $applicationfind->is_active = false;
         $jobSeekerListing->is_active = false;
         $jobSeekerListing->save();

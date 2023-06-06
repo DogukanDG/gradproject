@@ -1,15 +1,18 @@
 <?php
 
+use App\Models\Offers;
 use App\Models\Listing;
 use Illuminate\Http\Request;
 use App\Models\JobSeekerListing;
+use App\Mail\OfferApplicationMail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PDFController;
+
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ApplicationsOffers;
-
 use App\Http\Controllers\ListingController;
+use App\Http\Controllers\ApplicationsOffers;
 use App\Http\Controllers\JobSeekerController;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Php;
 
@@ -141,6 +144,7 @@ Route::get('/verify', function () {
 
 Route::post('/kayit', [AuthController::class,'create'])->name('kayit');
 Route::post('/verify', [AuthController::class,'verify'])->name('verify');
+
 
 
 //*Common Resources Routes:
