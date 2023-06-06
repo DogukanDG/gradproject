@@ -111,7 +111,7 @@ Route::post('/users/authenticate',[UserController::class,'authenticate']);
 
 //*Downloading as pdf
 Route::get('generate-pdf', [PDFController::class, 'generatePDF'])->middleware('auth');
-
+Route::get('generate-announcementpdf', [PDFController::class, 'generatePDF2'])->middleware('auth');
 
 //*JOB SEEKER ROUTES
 Route::get('/job-seekers/{jobseekerlisting}/edit',[JobSeekerController::class,'edit'])->middleware('auth');
