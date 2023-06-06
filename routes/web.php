@@ -1,15 +1,18 @@
 <?php
 
+use App\Models\Offers;
 use App\Models\Listing;
 use Illuminate\Http\Request;
 use App\Models\JobSeekerListing;
+use App\Mail\OfferApplicationMail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PDFController;
+
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ApplicationsOffers;
-
 use App\Http\Controllers\ListingController;
+use App\Http\Controllers\ApplicationsOffers;
 use App\Http\Controllers\JobSeekerController;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Php;
 
@@ -108,7 +111,7 @@ Route::post('/users/authenticate',[UserController::class,'authenticate']);
 
 //*Downloading as pdf
 Route::get('generate-pdf', [PDFController::class, 'generatePDF'])->middleware('auth');
-
+Route::get('generate-announcementpdf', [PDFController::class, 'generatePDF2'])->middleware('auth');
 
 //*JOB SEEKER ROUTES
 Route::get('/job-seekers/{jobseekerlisting}/edit',[JobSeekerController::class,'edit'])->middleware('auth');
@@ -141,6 +144,7 @@ Route::get('/verify', function () {
 
 Route::post('/kayit', [AuthController::class,'create'])->name('kayit');
 Route::post('/verify', [AuthController::class,'verify'])->name('verify');
+
 
 
 //*Common Resources Routes:

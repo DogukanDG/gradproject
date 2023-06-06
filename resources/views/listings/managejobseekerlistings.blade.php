@@ -34,6 +34,8 @@
                                     </td>
                                     <td class="px-4 py-8 border-t border-b border-gray-300 text-lg">
                                         <form action="/generate-pdf">
+
+                                            <input type="hidden" name="jobseekerListing" value="{{ $jobseekerlisting}}">
                                             <button class="text-green-500"><i class="fa-solid fa-download"></i>Export As
                                                 Pdf</button>
                                         </form>

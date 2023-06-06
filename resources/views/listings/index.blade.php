@@ -13,7 +13,7 @@
     @if (!empty($sortedlisting))
         <div class="grid grid-cols-2">
             @foreach ($sortedlisting as $match)
-                @if ($match->is_active)
+                @if ($match['listing']->is_active)
                     <x-listing-card :listing="$match['listing']" />
                 @endif
             @endforeach
