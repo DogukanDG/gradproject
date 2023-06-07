@@ -18,7 +18,10 @@
                     </th>
                 </tr>
             </thead>
-            @if ($applications->isNotEmpty())
+            @php
+                $showapplication = $applications->where('receiver_id', auth()->id())->where('is_active', true);
+            @endphp
+            @if (count($showapplication) > 0)
                 @foreach ($applications as $application)
                     @if ($application->is_active == true)
                         <tbody>
@@ -63,11 +66,13 @@
                         </tbody>
                     @endif
                 @endforeach
-            @else
+            @elseif (count($showapplication) == 0)
                 <tbody>
-                    <div class="flex items-center justify-center h-screen">
-                        <p>NO LISTING</p>
-                    </div>
+                    <tr class="text-lg align-items-center border-gray-300">
+                        <td class="px-4 py-8 border-t border-b border-gray-300 text-center" colspan="6">
+                            <p class="text-lg">No Offer Found</p>
+                        </td>
+                    </tr>
                 </tbody>
             @endif
         </table>

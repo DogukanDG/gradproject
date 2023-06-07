@@ -87,6 +87,7 @@ class ApplicationsOffers extends Controller
         
         $offerfind->is_active = false;
         $jobSeekerListing->is_active = false;
+        $jobSeekerListing->applysearch = false;
         $offerfind->save();
         $jobSeekerListing->save();
         

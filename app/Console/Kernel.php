@@ -20,6 +20,7 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             DB::table('jobseekerlistings')->where('expiration_date', '<', now())->delete();
         })->hourly();
+        
         $schedule->call(function () {
             DB::table('listings')->where('expiration_date', '<', now())->delete();
         })->hourly();

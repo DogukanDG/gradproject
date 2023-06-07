@@ -66,7 +66,7 @@
                             <div class="form-group ">
 
                                 <label for="skill1"></label>
-                                <div class="relative inline-block mt-3 w-80">
+                                <div class="inline-block mt-3 w-80">
                                     <select id="skill1" name="skills[]"
                                         class="block w-full py-2 pl-3 pr-10 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
                                         <option value="laravel">Laravel</option>
