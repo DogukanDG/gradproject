@@ -48,7 +48,7 @@
         </div>
     </nav> --}}
 
-    <nav class="bg-white  w-full border-b border-gray-300 ">
+    <nav class="sticky top-0 bg-white  w-full border-b border-gray-300 ">
         <div class="max-w-screen flex flex-wrap items-center justify-between mx-10 p-4">
             <a href="/" class="flex items-center">
                 <img src="{{ asset('/images/homepageimages/worklink1.png') }}" class="w-12 h-12 mr-3"
@@ -70,25 +70,28 @@
 
                 <ul
                     class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-10 md:mt-0 md:border-0 md:bg-white ">
-                    <li>
-                        <a href="/"
-                            class="block py-2 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0"
-                            aria-current="page">Home</a>
-                    </li>
-                    <li>
-                        <a href="/employers"
-                            class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 ">Employers</a>
-                    </li>
-                    <li>
-                        <a href="/job-seekers"
-                            class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 ">Job
-                            Seekers</a>
-                    </li>
-                    @auth
 
+                    @auth
+                        <li>
+                            <a href="/"
+                                class="block py-2 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0"
+                                aria-current="page">Home</a>
+                        </li>
+                        @if (auth()->user()->role == 'job-seeker')
+                            <li>
+                                <a href="/employers"
+                                    class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 ">Employers</a>
+                            </li>
+                        @elseif (auth()->user()->role == 'employer')
+                            <li>
+                                <a href="/job-seekers"
+                                    class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 ">Job
+                                    Seekers</a>
+                            </li>
+                        @endif
                         <li>
                             <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar"
-                                class="flex items-center justify-between w-full py-2 pl-3 pr-4  text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto">Dropdown
+                                class="flex items-center justify-between w-full py-2 pl-3 pr-4  text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto">Options
                                 <svg class="w-5 h-5 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd"
@@ -98,40 +101,50 @@
                             <div id="dropdownNavbar"
                                 class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
                                 <ul class="py-2 text-sm text-gray-700 " aria-labelledby="dropdownLargeButton">
-                                    <li>
-                                        <p class="block px-4 py-2">{{ auth()->user()->name }}
-                                            {{ auth()->user()->last_name }} </a>
-                                    </li>
-                                    @php
-                                        $route = auth()->user()->role;
-                                        $routeText = '';
-                                        if ($route == 'employer') {
-                                            $route = '/applications';
-                                            $routeText = 'Applications';
-                                        } elseif ($route == 'job-seeker') {
-                                            $route = '/offers';
-                                            $routeText = 'Offers';
-                                        }
-                                    @endphp
-                                    <li>
-                                        <a href='{{ $route }}' class="block px-4 py-2 hover:bg-gray-100"> <i
-                                                class="fa-solid fa-book mr-2"></i>{{ $routeText }}</a>
-                                    </li>
+                                    @if (auth()->user()->role == 'admin')
+                                        <li>
+                                            <a href="/admin" class="block px-4 py-2 hover:bg-gray-100 "><i
+                                                    class="fa-solid fa-gear mr-2"></i>Admin Panel</a>
+                                        </li>
+                                    @else
+                                        <li>
+                                            <p class="block px-4 py-2">{{ auth()->user()->name }}
+                                                {{ auth()->user()->last_name }} </a>
+                                        </li>
+                                        @php
+                                            $route = auth()->user()->role;
+                                            $routeText = '';
+                                            if ($route == 'employer') {
+                                                $route = '/applications';
+                                                $routeText = 'Applications';
+                                            } elseif ($route == 'job-seeker') {
+                                                $route = '/offers';
+                                                $routeText = 'Offers';
+                                            } else {
+                                                $routeText = '-';
+                                            }
+                                        @endphp
+                                        <li>
+                                            <a href='{{ $route }}' class="block px-4 py-2 hover:bg-gray-100"> <i
+                                                    class="fa-solid fa-book mr-2"></i>{{ $routeText }}</a>
+                                        </li>
 
-                                    @php
-                                        $route = auth()->user()->role;
-                                        if ($route == 'employer') {
-                                            $route = '/listings/manage';
-                                        } elseif ($route == 'job-seeker') {
-                                            $route = '/listings/jobseekermanage';
-                                        }
-                                    @endphp
-                                    <li>
-                                        <a href="{{ $route }}" class="block px-4 py-2 hover:bg-gray-100 "><i
-                                                class="fa-solid fa-gear mr-2"></i>My
-                                            Listings</a>
-                                    </li>
+                                        @php
+                                            $route = auth()->user()->role;
+                                            if ($route == 'employer') {
+                                                $route = '/listings/manage';
+                                            } elseif ($route == 'job-seeker') {
+                                                $route = '/listings/jobseekermanage';
+                                            }
+                                        @endphp
+                                        <li>
+                                            <a href="{{ $route }}" class="block px-4 py-2 hover:bg-gray-100 "><i
+                                                    class="fa-solid fa-gear mr-2"></i>My
+                                                Listings</a>
+                                        </li>
+
                                 </ul>
+                                @endif
                                 <div class="py-1">
                                     <form class='inline' method='POST' action='/logout'>
                                         @csrf
@@ -141,6 +154,7 @@
                                     </form>
                                 </div>
                             </div>
+
 
                         </li>
                     </ul>

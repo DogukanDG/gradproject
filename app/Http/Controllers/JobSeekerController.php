@@ -68,7 +68,7 @@ class JobSeekerController extends Controller
     if(!$user){
         return view('listings.jobseekerindex', ['jobseekerlistings' => JobSeekerListing::latest()->filter(request(['skills', 'search']))->simplePaginate(6),'sortedlisting'=>[]]);
     }
-    $emptyCondition = Listing::where('user_id', $user->id)->get();
+    $emptyCondition = Listing::where('user_id', $user->id)->where('applysearch',true)->get();
     if ($user->role === 'employer' && !($emptyCondition->isEmpty())) {
         $jobListings = JobSeekerListing::all();
         $jobseekerSkills = Listing::where('user_id', $user->id)
