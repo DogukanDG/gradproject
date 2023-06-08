@@ -145,7 +145,7 @@
     </div>
     <div class="flex flex-wrap justify-center">
         <div class="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
-            <div class="relative items-center">
+            <div class="items-center">
                 <img class=" w-48 mr-6 mb-6 rounded-full"
                     src="{{ $listing->logo ? asset('storage/' . $listing->logo) : asset('/images/no-image.png') }}"
                     alt="" />
@@ -203,6 +203,18 @@
                                                                 class="border border-gray-200 rounded p-2 w-full"
                                                                 name="phone_number" placeholder="+90 --- --- ----" />
 
+                                                        </div>
+                                                        <div class="mb-6 mt-3">
+                                                            <label for="cv" class="inline-block text-lg mb-2">
+                                                                CV
+                                                            </label>
+                                                            <input type="file"
+                                                                class="border border-gray-200 rounded p-2 w-full"
+                                                                name="cv" />
+                                                            @error('cv')
+                                                                <p class='text-red-500 text-xs mt-0.5'>{{ $message }}
+                                                                </p>
+                                                            @enderror
                                                         </div>
                                                         <div class="mb-6">
                                                             <label for="description" class="inline-block text-lg mb-2">

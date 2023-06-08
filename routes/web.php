@@ -66,6 +66,11 @@ Route::put('/job-seekers/{jobseekerlisting}/renew',[JobSeekerController::class,'
 //Route::get('/job-seekers/{jobseekerlisting}/download', [JobSeekerController::class, 'downloadcv']);
 Route::get('/job-seekers/{jobseekerlisting}/download', [JobSeekerController::class, 'downloadcv'])->name('jobseeker.download');
 
+Route::get('/applications/{application}/download', [ApplicationsOffers::class, 'downloadcv'])->name('application.download');
+
+Route::put('/offers/{application}/markreadapplication', [ApplicationsOffers::class, 'markreadapplication']);
+Route::put('/applications/{offer}/markreadoffer', [ApplicationsOffers::class, 'markreadoffer']);
+
 //*Store Listing Data
 Route::post('/listings',[ListingController::class,'store']);
 

@@ -207,10 +207,12 @@
                 </a>
                 @if ($user)
                     @if ($user->role == 'employer')
-                        <a href="{{ route('jobseeker.download', ['jobseekerlisting' => $jobseekerlisting]) }}"
-                            class="bg-blue-400 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"><i
-                                class="fa-solid fa-download"></i>
-                            Download CV</a>
+                        @if ($jobseekerlisting->cv != null)
+                            <a href="{{ route('jobseeker.download', ['jobseekerlisting' => $jobseekerlisting]) }}",
+                                class="bg-blue-400 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"><i
+                                    class="fa-solid fa-download"></i>
+                                Download CV</a>
+                        @endif
                         <button type="button"
                             class="openModal bg-green-400 active:bg-green-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">Send
                             Offer
@@ -267,7 +269,7 @@
                                                             class="justify-between bg-gray-50 py-3  sm:flex sm:flex-row-reverse">
                                                             <button type="submit"
                                                                 class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm">
-                                                                Send Application
+                                                                Send Offer
                                                             </button>
                                                             <button type="button"
                                                                 class="closeModal mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
@@ -304,7 +306,12 @@
 
         </div>
     </div>
-    <div class="text-center mt-12">
+    <div class=" justify-center text-center mt-12">
+        {{-- <div class="items-center">
+            <img class=" w-48 mr-6 mb-6 rounded-full"
+                src="{{ $jobseekerlisting->logo ? asset('storage/' . $jobseekerlisting->logo) : asset('/images/no-image.png') }}"
+                alt="" />
+        </div> --}}
         <h3 class="text-4xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">
             {{ $jobseekerlisting->name }}
         </h3>

@@ -24,7 +24,7 @@
                             @foreach ($showlist as $listing)
                                 <tr class="border-gray-300">
                                     <td class="px-4 py-8 border-t border-b border-gray-300 text-lg">
-                                        <a href="show.html">
+                                        <a href="/listings/{{ $listing['id'] }}">
                                             {{ $listing['title'] }}
                                         </a>
                                     </td>
@@ -49,15 +49,21 @@
                                                 Pdf</button>
                                         </form>
                                     </td>
-                                    <td class="px-4 py-8 border-t border-b border-gray-300 text-lg">
-                                        <form action="{{ route('listings.applysearch', ['listing' => $listing]) }}"
-                                            method="POST" enctype="multipart/form-data">
-                                            @csrf
-                                            @method('PUT')
-                                            <button class="text-black-500"><i class="fa-solid fa-apply"></i>Apply
-                                                Search</button>
-                                        </form>
-                                    </td>
+                                    @if ($listing->applysearch == 0)
+                                        <td class="px-4 py-8 border-t border-b border-gray-300 text-lg">
+                                            <form action="{{ route('listings.applysearch', ['listing' => $listing]) }}"
+                                                method="POST" enctype="multipart/form-data">
+                                                @csrf
+                                                @method('PUT')
+                                                <button class="text-black-500"><i class="fa-solid fa-apply"></i>Apply
+                                                    Search</button>
+                                            </form>
+                                        </td>
+                                    @else
+                                        <td class="px-4 py-8 border-t border-b border-gray-300 text-lg justify-center">
+                                            Active
+                                        </td>
+                                    @endif
                                     <td class="px-4 py-8 border-t border-b border-gray-300 text-lg">
                                         <form method="POST" action="/listings/{{ $listing['id'] }}/renew">
                                             @csrf {{-- This is for preventing people from submiting a form from their website to yours --}}

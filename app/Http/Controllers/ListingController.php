@@ -21,54 +21,125 @@ class ListingController extends Controller
         return view('pages.homepage');
     }
 
-    public function index(){
-        $user = auth()->user();
-        if(!$user){
-            return view('listings.index', ['listings' => Listing::latest()->filter(request(['skills', 'search']))->simplePaginate(6),'sortedlisting'=>[]]);
-        }
-        $emptyCondition = JobSeekerListing::where('user_id', $user->id)->where('applysearch',true)->get();
+    // public function index(){
+    //     $user = auth()->user();
+    //     if(!$user){
+    //         return view('listings.index', ['listings' => Listing::latest()->filter(request(['skills', 'search']))->simplePaginate(6),'sortedlisting'=>[]]);
+    //     }
+    //     $emptyCondition = JobSeekerListing::where('user_id', $user->id)->where('applysearch',true)->get();
         
+    // if ($user->role === 'job-seeker' && !($emptyCondition->isEmpty())) {
+    //     $jobListings = Listing::all();
+    //     $employerSkills = JobSeekerListing::where('user_id', $user->id)
+    //         ->where('applysearch', true)
+    //         ->get();
+    //      if(!empty($employerSkills)){
+    //         $jobSeekerTargetSkillsArray = $employerSkills[0]->getAttributes()['skills'];
+    //         $matches = [];
+    //     foreach ($jobListings as $jobListing) {
+    //         $matchedSkills = array_intersect(
+    //             json_decode($jobSeekerTargetSkillsArray),
+    //             json_decode($jobListing->skills)
+    //         );
+    //         $matchScore = count($matchedSkills);
+
+    //         if ($matchScore >= 0) {
+    //             $matches[] = [
+    //                 'listing' => $jobListing,
+    //                 'match_score' => $matchScore,
+    //             ];
+    //         }
+    //     }
+
+    //     // Sort the matches by match score in descending order
+    //     usort($matches, function ($a, $b) {
+    //         return $b['match_score'] <=> $a['match_score'];
+    //     });
+    //     return view('listings.index', ['sortedlisting' => $matches, 'listings' => []]);
+    //      }else{
+    //         return view('listings.index', ['listings' => Listing::latest()->filter(request(['skills', 'search']))->simplePaginate(6),'sortedlisting'=>[]]);
+    //      }
+    // }else{
+    //     return view('listings.index', ['listings' => Listing::latest()->filter(request(['skills', 'search']))->simplePaginate(6),'sortedlisting'=>[]]);
+    // }
+        
+    //     // return view('listings.index', [
+        
+    //     //     'listings' => Listing::latest() -> filter(request(['tag','search'])) -> simplepaginate(6)
+    //     // ]); //the name of the view that we want to return
+    // }
+    public function index()
+{
+    $user = auth()->user();
+    if (!$user) {
+        return view('listings.index', [
+            'listings' => Listing::latest()->filter(request(['skills', 'search']))->simplePaginate(6),
+            'sortedlisting' => []
+        ]);
+    }
+
+    $emptyCondition = JobSeekerListing::where('user_id', $user->id)->where('applysearch', true)->get();
+
     if ($user->role === 'job-seeker' && !($emptyCondition->isEmpty())) {
         $jobListings = Listing::all();
         $employerSkills = JobSeekerListing::where('user_id', $user->id)
             ->where('applysearch', true)
             ->get();
-         if(!empty($employerSkills)){
+
+        if (!empty($employerSkills)) {
             $jobSeekerTargetSkillsArray = $employerSkills[0]->getAttributes()['skills'];
             $matches = [];
-        foreach ($jobListings as $jobListing) {
-            $matchedSkills = array_intersect(
-                json_decode($jobSeekerTargetSkillsArray),
-                json_decode($jobListing->skills)
-            );
-            $matchScore = count($matchedSkills);
+            foreach ($jobListings as $jobListing) {
+                $matchedSkills = array_intersect(
+                    json_decode($jobSeekerTargetSkillsArray),
+                    json_decode($jobListing->skills)
+                );
+                $matchScore = count($matchedSkills);
 
-            if ($matchScore >= 0) {
-                $matches[] = [
-                    'listing' => $jobListing,
-                    'match_score' => $matchScore,
-                ];
+                if ($matchScore >= 0) {
+                    $matches[] = [
+                        'listing' => $jobListing,
+                        'match_score' => $matchScore,
+                    ];
+                }
             }
+
+            // Sort the matches by match score in descending order, or by created_at if all match scores are 0
+            usort($matches, function ($a, $b) {
+                if ($a['match_score'] === 0 && $b['match_score'] === 0) {
+                    return $b['listing']->created_at <=> $a['listing']->created_at;
+                }
+                return $b['match_score'] <=> $a['match_score'];
+            });
+
+            $searchedMatches = collect($matches)->filter(function ($match) {
+                $searchTerm = request('search');
+                return stripos($match['listing']->title, $searchTerm) !== false
+                    || stripos($match['listing']->description, $searchTerm) !== false
+                    || stripos($match['listing']->skills, $searchTerm) !== false
+                    || stripos($match['listing']->name, $searchTerm) !== false
+                    || stripos($match['listing']->location, $searchTerm) !== false;
+            })->toArray();
+
+            return view('listings.index', [
+                'sortedlisting' => $searchedMatches,
+                'listings' => []
+            ]);
+        } else {
+            return view('listings.index', [
+                'listings' => Listing::latest()->filter(request(['skills', 'search']))->simplePaginate(6),
+                'sortedlisting' => []
+            ]);
         }
-
-        // Sort the matches by match score in descending order
-        usort($matches, function ($a, $b) {
-            return $b['match_score'] <=> $a['match_score'];
-        });
-        return view('listings.index', ['sortedlisting' => $matches, 'listings' => []]);
-         }else{
-            return view('listings.index', ['listings' => Listing::latest()->filter(request(['skills', 'search']))->simplePaginate(6),'sortedlisting'=>[]]);
-         }
-    }else{
-        return view('listings.index', ['listings' => Listing::latest()->filter(request(['skills', 'search']))->simplePaginate(6),'sortedlisting'=>[]]);
+    } else {
+        return view('listings.index', [
+            'listings' => Listing::latest()->filter(request(['skills', 'search']))->simplePaginate(6),
+            'sortedlisting' => []
+        ]);
     }
-        
-        // return view('listings.index', [
-        
-        //     'listings' => Listing::latest() -> filter(request(['tag','search'])) -> simplepaginate(6)
-        // ]); //the name of the view that we want to return
-    }
+}
 
+    
 
     
     //show single listing
@@ -109,7 +180,7 @@ class ListingController extends Controller
         $formFields['skills'] = json_encode($skills);
         $formFields['user_id'] = auth()->id();
         $formField['is_active'] = true;
-        $formFields['expiration_date'] = now()-> addDays(5);
+        $formFields['expiration_date'] = now()-> addDays(60);
         $userListings = Listing::where('user_id', auth()->id())->get(); // Retrieve other listings created by the same user
         
         foreach ($userListings as $listing) {
@@ -146,7 +217,7 @@ class ListingController extends Controller
         }
         $formFields['skills'] = json_encode($skills);
         $formFields['user_id'] = auth()->id();
-        $formFields['expiration_date'] = now()-> addDays(5);
+        $formFields['expiration_date'] = now()-> addDays(60);
         $listing->update($formFields);
         
         return redirect()->back()->with('message','Listing Updated!');
@@ -191,7 +262,7 @@ class ListingController extends Controller
             
         }
         public function renew(Listing $listing){
-            $listing->update(['expiration_date'=>now()->addDays()]);
+            $listing->update(['expiration_date'=>now()->addDays(60)]);
             return redirect()->back()->with('message','Listing Renewed!');
          }
         //Manage listings
