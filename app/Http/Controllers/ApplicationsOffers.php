@@ -35,11 +35,13 @@ class ApplicationsOffers extends Controller
             
         ]);
         $listing= JobSeekerListing::findOrFail($request->listing_id);
+        $applySearchList = Listing::where('user_id',auth()->id())->where('applysearch',true)->get();
         $formFields['receiver_id'] = $listing->user_id;
-        
+        $formFields['company_name'] = $applySearchList[0]->name;
         $user= User::findOrFail( $formFields['receiver_id']);
         $formFields['receiver_email'] = $user->email;
         $formFields['receiver_listing_id'] = $request->input('listing_id');
+        $formFields['expiration_date'] = now()-> addDays(14);
         $formField['is_active'] = true;
         $formFields['sender_id'] = auth()->id();
         
@@ -59,6 +61,10 @@ class ApplicationsOffers extends Controller
         $formFields['receiver_id'] = $listing->user_id;
         
         $user= User::findOrFail( $formFields['receiver_id']);
+        if($request->hasFile('cv')){
+            $formFields['cv'] = $request ->file('cv')->store('applicationcvs','public');
+        }
+        $formFields['expiration_date'] = now()-> addDays(14);
         $formFields['receiver_email'] = $user->email;
         $formFields['receiver_listing_id'] = $request->input('listing_id');
         $formField['is_active'] = true;
@@ -88,6 +94,7 @@ class ApplicationsOffers extends Controller
         $offerfind->is_active = false;
         $jobSeekerListing->is_active = false;
         $jobSeekerListing->applysearch = false;
+        $offerfind->status = 'Accepted';
         $offerfind->save();
         $jobSeekerListing->save();
         
@@ -97,9 +104,38 @@ class ApplicationsOffers extends Controller
     }
     
     public function offerdecline(Offers $offer){
-        $offer->delete(); 
+        $offerfind = Offers::findOrFail($offer['id']);
+        $offerfind->status = 'Declined';
+        $offerfind->is_active = false; 
+        $offerfind->show_history = true;
+        $offerfind->save(); 
         return redirect('/offers')->with('message','Offer Declined');
     }
+
+    public function markreadapplication(Applications $application)
+    {   
+        
+        $applicationfind = Applications::findOrFail($application['id']); 
+        $applicationfind->show_history = false;
+        $applicationfind->save();
+        return redirect('/offers');
+        
+   }
+   public function markreadoffer(Offers $offer)
+   {   
+
+       $offerfind = Offers::findOrFail($offer['id']); 
+       $offerfind->show_history = false;
+       $offerfind->save();
+       return redirect('/applications');
+       
+  }
+
+    public function downloadcv(Applications $application)
+    {   
+        return response()->download(public_path('storage/'. $application['cv']));
+   }
+
     
     public function applicationaccept(Applications $application){
         $applicationfind = Applications::findOrFail($application['id']);
@@ -118,6 +154,8 @@ class ApplicationsOffers extends Controller
         //*IF WE WANT TO STORE IT FOR THE USER JUST MAKE IT IS_ACTIVE to FALSE 
         Mail::to($applicationfind['sender_email'])->send(new OfferApplicationMail($applicationfind));
         $applicationfind->is_active = false;
+        $applicationfind->show_history = true;
+        $applicationfind->status = 'Accepted';
         $jobSeekerListing->is_active = false;
         $jobSeekerListing->save();
         $applicationfind->save();
@@ -126,7 +164,11 @@ class ApplicationsOffers extends Controller
     }
     
     public function applicationdecline(Applications $application){
-        $application->delete(); 
+        $applicationfind = Applications::findOrFail($application['id']);
+        $applicationfind->status = 'Declined';
+        $applicationfind->is_active = false; 
+        $applicationfind->show_history = true;
+        $applicationfind->save();
         return redirect('/offers')->with('message','Offer Declined');
     }
     

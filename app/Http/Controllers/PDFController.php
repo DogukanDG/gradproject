@@ -17,7 +17,7 @@ class PDFController extends Controller
     */
     public function generatePDF(Request $request)
     {
-        //DONT FORGET TO CHANGE THE DOWNLOAD NAME (Username.pdf)
+        
         $username=auth()->user()->name;
         
 
@@ -43,7 +43,7 @@ class PDFController extends Controller
     
     public function generatePDF2(Request $request)
     {
-        //DONT FORGET TO CHANGE THE DOWNLOAD NAME (Username.pdf)
+        
         $announcementInfo =json_decode($request->listing);
         
         $data = [

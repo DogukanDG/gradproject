@@ -33,7 +33,7 @@ class UserController extends Controller
 
         //User Create
         $user = User::create($formFields);
-
+        dd($user);
         auth()->login($user);
         return redirect('/')->with('message','User create and logged in');
     

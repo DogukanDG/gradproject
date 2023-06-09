@@ -21,6 +21,10 @@ return new class extends Migration
             $table->string('receiver_email');
             $table->string('receiver_listing_id');
             $table->boolean('is_active')->default(true);
+            $table->dateTime('expiration_date')->nullable();
+            $table->string('cv')->nullable();
+            $table->boolean('show_history')->default(true);
+            $table->string('status')->default('Pending');
             $table->string('phone_number');
             $table->longtext('description');
             $table->timestamps();

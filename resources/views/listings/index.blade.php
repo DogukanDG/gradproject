@@ -37,7 +37,7 @@
         <div class="mt-6 p-4 justify-between">
             @if ($sortedlisting)
             @elseif(!empty($listings))
-                {{ $listings->links() }}
+                {{ $listings }}
             @endif
         </div>
     </div>

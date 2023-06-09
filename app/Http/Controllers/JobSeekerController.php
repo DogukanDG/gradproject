@@ -62,52 +62,126 @@ class JobSeekerController extends Controller
     
     // }
 
+    // public function index()
+    // {
+       
+    // $user = auth()->user();
+    // if(!$user){
+    //     return view('listings.jobseekerindex', ['jobseekerlistings' => JobSeekerListing::latest()->filter(request(['skills', 'search']))->simplePaginate(6),'sortedlisting'=>[]]);
+    // }
+    // $emptyCondition = Listing::where('user_id', $user->id)->where('applysearch',true)->get();
+    // if ($user->role === 'employer' && !($emptyCondition->isEmpty())) {
+    //     $jobListings = JobSeekerListing::all();
+    //     $jobseekerSkills = Listing::where('user_id', $user->id)
+    //         ->where('applysearch', true)
+    //         ->get();
+    //     if(!empty($jobseekerSkills)){
+    //         $employeeTargetSkillsArray = $jobseekerSkills[0]->getAttributes()['skills'];
+    //         $matches = [];
+        
+    //     foreach ($jobListings as $jobListing) {
+    //         $matchedSkills = array_intersect(
+    //             json_decode($employeeTargetSkillsArray),
+    //             json_decode($jobListing->skills)
+    //         );
+    //         $matchScore = count($matchedSkills);
+
+    //         if ($matchScore >= 0) {
+    //             $matches[] = [
+    //                 'listing' => $jobListing,
+    //                 'match_score' => $matchScore,
+    //             ];
+    //         }
+    //     }
+
+    //     // Sort the matches by match score in descending order
+    //     usort($matches, function ($a, $b) {
+    //         return $b['match_score'] <=> $a['match_score'];
+    //     });
+
+    //     return view('listings.jobseekerindex', ['sortedlisting' => $matches, 'jobseekerlistings' => []]);
+    //     }else{
+    //         return view('listings.jobseekerindex', ['jobseekerlistings' => JobSeekerListing::latest()->filter(request(['skills', 'search']))->simplePaginate(6),'sortedlisting'=>[]]);
+    //     }
+        
+    //     } else {
+    //     return view('listings.jobseekerindex', ['jobseekerlistings' => JobSeekerListing::latest()->filter(request(['skills', 'search']))->simplePaginate(6),'sortedlisting'=>[]]);
+    // }
+    // }
     public function index()
-    {
+{
     $user = auth()->user();
-    if(!$user){
-        return view('listings.jobseekerindex', ['jobseekerlistings' => JobSeekerListing::latest()->filter(request(['skills', 'search']))->simplePaginate(6),'sortedlisting'=>[]]);
+    if (!$user) {
+        return view('listings.jobseekerindex', [
+            'jobseekerlistings' => JobSeekerListing::latest()->filter(request(['skills', 'search']))->simplePaginate(6),
+            'sortedlisting' => []
+        ]);
     }
-    $emptyCondition = Listing::where('user_id', $user->id)->where('applysearch',true)->get();
+
+    $emptyCondition = Listing::where('user_id', $user->id)->where('applysearch', true)->get();
+
     if ($user->role === 'employer' && !($emptyCondition->isEmpty())) {
         $jobListings = JobSeekerListing::all();
         $jobseekerSkills = Listing::where('user_id', $user->id)
             ->where('applysearch', true)
             ->get();
-        if(!empty($jobseekerSkills)){
+
+        if (!empty($jobseekerSkills)) {
             $employeeTargetSkillsArray = $jobseekerSkills[0]->getAttributes()['skills'];
             $matches = [];
-        
-        foreach ($jobListings as $jobListing) {
-            $matchedSkills = array_intersect(
-                json_decode($employeeTargetSkillsArray),
-                json_decode($jobListing->skills)
-            );
-            $matchScore = count($matchedSkills);
 
-            if ($matchScore >= 0) {
-                $matches[] = [
-                    'listing' => $jobListing,
-                    'match_score' => $matchScore,
-                ];
+            foreach ($jobListings as $jobListing) {
+                $matchedSkills = array_intersect(
+                    json_decode($employeeTargetSkillsArray),
+                    json_decode($jobListing->skills)
+                );
+                $matchScore = count($matchedSkills);
+
+                if ($matchScore >= 0) {
+                    $matches[] = [
+                        'listing' => $jobListing,
+                        'match_score' => $matchScore,
+                    ];
+                }
             }
-        }
 
-        // Sort the matches by match score in descending order
-        usort($matches, function ($a, $b) {
-            return $b['match_score'] <=> $a['match_score'];
-        });
+            // Sort the matches by match score in descending order, or by created_at if all match scores are 0
+            usort($matches, function ($a, $b) {
+                if ($a['match_score'] === 0 && $b['match_score'] === 0) {
+                    return $b['listing']->created_at <=> $a['listing']->created_at;
+                }
+                return $b['match_score'] <=> $a['match_score'];
+            });
 
-        return view('listings.jobseekerindex', ['sortedlisting' => $matches, 'jobseekerlistings' => []]);
-        }else{
-            return view('listings.jobseekerindex', ['jobseekerlistings' => JobSeekerListing::latest()->filter(request(['skills', 'search']))->simplePaginate(6),'sortedlisting'=>[]]);
-        }
-        
+            $searchedMatches = collect($matches)->filter(function ($match) {
+                $searchTerm = request('search');
+                return stripos($match['listing']->title, $searchTerm) !== false
+                    || stripos($match['listing']->description, $searchTerm) !== false
+                    || stripos($match['listing']->skills, $searchTerm) !== false
+                    || stripos($match['listing']->location, $searchTerm) !== false
+                    || stripos($match['listing']->name, $searchTerm) !== false
+                    || stripos($match['listing']->last_name, $searchTerm) !== false;
+            })->toArray();
+
+            return view('listings.jobseekerindex', [
+                'sortedlisting' => $searchedMatches,
+                'jobseekerlistings' => []
+            ]);
         } else {
-        return view('listings.jobseekerindex', ['jobseekerlistings' => JobSeekerListing::latest()->filter(request(['skills', 'search']))->simplePaginate(6),'sortedlisting'=>[]]);
+            return view('listings.jobseekerindex', [
+                'jobseekerlistings' => JobSeekerListing::latest()->filter(request(['skills', 'search']))->simplePaginate(6),
+                'sortedlisting' => []
+            ]);
+        }
+    } else {
+        return view('listings.jobseekerindex', [
+            'jobseekerlistings' => JobSeekerListing::latest()->filter(request(['skills', 'search']))->simplePaginate(6),
+            'sortedlisting' => []
+        ]);
     }
-    }
+}
 
+    
 
  
     public function applysearch(JobSeekerListing $jobseekerlisting)
@@ -152,7 +226,7 @@ class JobSeekerController extends Controller
         $formFields['name'] = auth()->user()->name;
         $formFields['last_name'] = auth()->user()->last_name;
         $formFields['email'] = auth()->user()->email;
-        $formFields['expiration_date'] = now()-> addDays(5);
+        $formFields['expiration_date'] = now()-> addDays(60);
         
         $userListings = JobSeekerListing::where('user_id', auth()->id())->get(); // Retrieve other listings created by the same user
         
@@ -192,7 +266,7 @@ class JobSeekerController extends Controller
             'location' => 'required',
             'experience' => 'required',
             'description' => 'required',
-            'cv'=>'required|mimes:pdf|max:2048',
+            'cv'=>'mimes:pdf|max:2048',
         ]);
         $formFields['skills'] = json_encode($skills);
         if($request->hasFile('cv')){
@@ -205,7 +279,7 @@ class JobSeekerController extends Controller
         $formFields['user_id'] = auth()->id();
         $formFields['name'] = auth()->user()->name;
         $formFields['email'] = auth()->user()->email;
-        $formFields['expiration_date'] = now()-> addDays(5);
+        $formFields['expiration_date'] = now()-> addDays(60);
         $jobseekerlisting->update($formFields);
         return redirect('/')->with('message','Listing Edited');
     }
@@ -237,7 +311,7 @@ class JobSeekerController extends Controller
         return redirect('')->with('message','Listing Deleted Successfully');
     }
     public function renew(JobSeekerListing $jobseekerlisting){
-        $jobseekerlisting->update(['expiration_date'=>now()->addDays()]);
+        $jobseekerlisting->update(['expiration_date'=>now()->addDays(60)]);
         return redirect()->back()->with('message','Listing Renewed!');
      }
     //ALSO ADD MANAGE LİSTİNGS HERE
