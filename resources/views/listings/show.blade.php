@@ -1,5 +1,4 @@
 <x-layout>
-    @include('partials._search')
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <div class="mx-4">
         @php
@@ -143,7 +142,7 @@
             <div></div>
         @endif --}}
     </div>
-    <div class="flex flex-wrap justify-center">
+    <div class="flex flex-wrap justify-center mt-10">
         <div class="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
             <div class="items-center">
                 <img class=" w-48 mr-6 mb-6 rounded-full"

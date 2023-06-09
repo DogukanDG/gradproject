@@ -80,7 +80,8 @@ class AuthController extends Controller
                 'password' => bcrypt($request['password']),
                 'isVerified' => 1
             ]);
-                Auth::login($user->first());
+            
+                Auth::login($user);
                 return redirect('/')->with('Phone number verified Logged In Succesfully ');
              }
     
