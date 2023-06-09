@@ -18,17 +18,19 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->string('logo')->nullable();
-            $table->string('tags');
-            $table->string('company');
+            $table->boolean('is_active')->default(true);
+            $table->json('skills')->nullable();
+            $table->unsignedInteger('person_need')->default(1);
+            $table->string('name');
+            $table->dateTime('expiration_date')->nullable();
             $table->string('location');
             $table->string('email');
-            $table->string('website');
+            $table->boolean('applysearch')->default(false);
             $table->longtext('description');
             $table->timestamps();
         });
     }
-
-    /**
+/**
      * Reverse the migrations.
      *
      * @return void

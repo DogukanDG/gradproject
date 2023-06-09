@@ -19,7 +19,10 @@ class DatabaseSeeder extends Seeder
         //\App\Models\listings::factory(10)->create();
         $user = User::factory()->create([
             'name'=> 'Dogukan Dg',
-            'email' => 'dogukan1@gmail.com'
+            'role'=>'employer',
+            'phone'=>'123456789',
+            'email' => 'dogukan1@gmail.com',
+            
         ]);
         
         Listing::factory(6) -> create(

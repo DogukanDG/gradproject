@@ -8,6 +8,9 @@ use Illuminate\Foundation\Auth\User;
 
 class UserController extends Controller
 {
+    public $phone;
+
+    public $showModal = false;
     //show register create form
     public function create(){
         return view('users.register');
@@ -15,9 +18,12 @@ class UserController extends Controller
 
     //Post request to store the user
     public function store(Request $request){
+        //dd($request->all());
         $formFields = $request->validate([
             'name' => ['required','min:3'],
+            'role'=>['required'],
             'email' => ['required', Rule::unique('users', 'email')],
+            'phone'=>['required', Rule::unique('users', 'phone')],
             'password' => 'required|confirmed|min:6',
     
         ]);
@@ -27,7 +33,7 @@ class UserController extends Controller
 
         //User Create
         $user = User::create($formFields);
-
+        dd($user);
         auth()->login($user);
         return redirect('/')->with('message','User create and logged in');
     
@@ -47,6 +53,7 @@ class UserController extends Controller
 
     //authenticate
     public function authenticate(Request $request){
+        //dd($request->all());
         $formFields = $request->validate([
             'email' => ['required',  'email'],
             'password' => 'required',
@@ -54,7 +61,6 @@ class UserController extends Controller
         ]);
         if(auth()->attempt($formFields)){
                 $request->session()->regenerate();
-
                 return redirect('/')->with('Logged In Succesfully ');
         }
         return back()->withErrors(['email' => 'Invalid Credentials'])->onlyInput('email');
