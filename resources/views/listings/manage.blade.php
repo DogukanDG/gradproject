@@ -61,7 +61,7 @@
                                         </td>
                                     @else
                                         <td class="px-4 py-8 border-t border-b border-gray-300 text-lg justify-center">
-                                            Active
+                                            Search Active
                                         </td>
                                     @endif
                                     <td class="px-4 py-8 border-t border-b border-gray-300 text-lg">
@@ -75,7 +75,7 @@
                                 </tr>
                             @endforeach
                         @endif
-                        @if (count($listings) == 0)
+                        @if (count($showlist) == 0)
                             <tr class="text-lg align-items-center border-gray-300">
                                 <td class="px-4 py-8 border-t border-b border-gray-300 text-lg align-items-center">
                                     <p class="text-lg">No Listing Found</p>

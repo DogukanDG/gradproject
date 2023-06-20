@@ -258,6 +258,25 @@
 
                                                         </div>
                                                         <div class="mb-6">
+                                                            <label for="sender_listing_id"
+                                                                class="inline-block text-lg mb-2">Select a Listing for
+                                                                System Evaluation
+                                                            </label>
+                                                            @php
+                                                                $userListings = \App\Models\Listing::where('user_id', auth()->user()->id)
+                                                                    ->where('is_active', 1)
+                                                                    ->get();
+                                                            @endphp
+                                                            <select class="border border-gray-200 rounded p-2 w-full"
+                                                                name="sender_listing_id">
+                                                                @foreach ($userListings as $listing)
+                                                                    <option value="{{ $listing->id }}">
+                                                                        {{ $listing->title }}</option>
+                                                                @endforeach
+                                                            </select>
+
+                                                        </div>
+                                                        <div class="mb-6">
                                                             <label for="description" class="inline-block text-lg mb-2">
                                                                 Information
                                                             </label>
@@ -322,7 +341,7 @@
             <i class="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>
             {{ $jobseekerlisting->location }}
         </div>
-        <h5 class="text-xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2"> Required Skills</h5>
+        <h5 class="text-xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">Skills</h5>
         @php
             $tags = json_decode($jobseekerlisting['skills']);
             $educations = json_decode($jobseekerlisting['educations']);
@@ -343,10 +362,11 @@
     </div>
 
 
-    <div class="mt-10 py-10 border-t border-blueGray-200 text-center">
-        <div class="flex flex-wrap justify-center">
-            <div class="w-full lg:w-9/12 px-4">
-                <p class="mb-4 text-lg leading-relaxed text-blueGray-700">
+    <div class="mt-10 py-10 border-t border-blueGray-200">
+        <div>
+            <div class="mx-auto w-full lg:w-9/12 px-4">
+                <p style="width:100%;word-break:break-word;"
+                    class="mb-4 text-lg leading-relaxed text-blueGray-700 text-center">
                     {{ $jobseekerlisting->description }}
 
                 </p>

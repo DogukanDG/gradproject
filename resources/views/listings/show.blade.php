@@ -152,17 +152,27 @@
         </div>
         <div class="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
             <div class="py-6 px-3 mt-32 sm:mt-0">
-                <a href="mailto:{{ $listing['email'] }}"style="background-color: blue;"
-                    class="bg-green-400 active:bg-green-600  uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
-                    type="button">
-                    Contact Employer
-                </a>
+                @if (auth()->user()->id != $listing->user_id)
+                    <a href="mailto:{{ $listing['email'] }}"style="background-color: blue;"
+                        class="bg-green-400 active:bg-green-600  uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
+                        type="button">
+                        Contact Employer
+                    </a>
+                @endif
+                @php
+                    $user = auth()->user();
+                    $hasListing = App\Models\JobSeekerListing::where('user_id', $user->id)
+                        ->where('applysearch', 1)
+                        ->exists();
+                @endphp
                 @if ($user)
                     @if ($user->role == 'job-seeker')
-                        <button type="button"
-                            class="openModal bg-green-400 active:bg-green-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">Send
-                            Application
-                        </button>
+                        @if ($hasListing)
+                            <button type="button"
+                                class="openModal bg-green-400 active:bg-green-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">Send
+                                Application
+                            </button>
+                        @endif
                         <div class="fixed z-10 inset-0 invisible overflow-y-auto" aria-labelledby="modal-title"
                             role="dialog" aria-modal="true" id="interestModal">
                             <div
@@ -180,6 +190,7 @@
                                                     id="modal-title">
                                                     Application Form
                                                 </h3>
+
                                                 <div class="mt-8 items-center justify-center">
                                                     <form method="POST" action="/storeapplication"
                                                         enctype="multipart/form-data">
@@ -192,6 +203,7 @@
                                                                 class="border border-gray-200 rounded p-2 w-full"
                                                                 name="sender_email" value={{ auth()->user()->email }} />
                                                         </div>
+
                                                         <input type="hidden" name="listing_id"
                                                             value={{ $listing['id'] }}>
                                                         <div class="mb-6">
@@ -203,6 +215,23 @@
                                                                 name="phone_number" placeholder="+90 --- --- ----" />
 
                                                         </div>
+                                                        {{-- <div class="mb-6">
+                                                            <label for="sender_listing_id"
+                                                                class="inline-block text-lg mb-2">Select a Listing for
+                                                                System Evaluation
+                                                            </label>
+                                                            @php
+                                                                $userListings = \App\Models\JobSeekerListing::where('user_id', auth()->user()->id)->get();
+                                                            @endphp
+                                                            <select class="border border-gray-200 rounded p-2 w-full"
+                                                                name="sender_listing_id">
+                                                                @foreach ($userListings as $listing)
+                                                                    <option value="{{ $listing->id }}">
+                                                                        {{ $listing->title }}</option>
+                                                                @endforeach
+                                                            </select>
+
+                                                        </div> --}}
                                                         <div class="mb-6 mt-3">
                                                             <label for="cv" class="inline-block text-lg mb-2">
                                                                 CV
@@ -222,7 +251,8 @@
                                                             <textarea name="description" id="description" rows="4"
                                                                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
                                                                 placeholder="Include Work Hours, Salary etc."></textarea>
-                                                        </div>
+                                                        </div>,
+
                                                         <div
                                                             class="justify-between bg-gray-50 py-3  sm:flex sm:flex-row-reverse">
                                                             <button type="submit"
@@ -234,6 +264,7 @@
                                                                 Cancel
                                                             </button>
                                                         </div>
+
                                                         <p></p>
                                                     </form>
                                                 </div>
@@ -260,7 +291,7 @@
         </h3>
 
         <h5 class="text-xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2"> {{ $listing->title }}</h5>
-        <div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
+        <div class="text-xs leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
             <i class="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>
             {{ $listing->location }}
         </div>
@@ -269,25 +300,24 @@
             $tags = json_decode($listing['skills']);
         @endphp
         @foreach ($tags as $tag)
-            <span style="background-color: blue;"
-                class="uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">{{ $tag }}</span>
+            <span style="background-color: rgb(1, 149, 255);"
+                class="uppercase text-white font-bold hover:shadow-md shadow text-xs px-3 py-1 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">{{ $tag }}</span>
         @endforeach
         <div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 ">
-            <p class="mt-4 mr-2 text-lg text-blueGray-400">Number Of People To Be Recruited: {{ $listing->person_need }}
+            <p class="mt-4 mr-2 text-lg text-blueGray-400">Number Of People To Be Recruited:
+                {{ $listing->person_need }}
             </p>
 
         </div>
     </div>
 
-
     <div class="mt-10 py-10 border-t border-blueGray-200 text-center">
         <div class="flex flex-wrap justify-center">
             <div class="w-full lg:w-9/12 px-4">
-                <p class="mb-4 text-lg leading-relaxed text-blueGray-700">
+                <p style="width:100%;word-break:break-word;"
+                    class="mb-4 text-lg leading-relaxed text-blueGray-700 text-center">
                     {{ $listing->description }}
-
                 </p>
-
             </div>
         </div>
     </div>

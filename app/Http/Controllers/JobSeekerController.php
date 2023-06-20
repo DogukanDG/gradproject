@@ -109,7 +109,7 @@ class JobSeekerController extends Controller
     // }
     // }
     public function index()
-{
+    {
     $user = auth()->user();
     if (!$user) {
         return view('listings.jobseekerindex', [
@@ -206,7 +206,12 @@ class JobSeekerController extends Controller
 
     }
     public function store(Request $request){
-        $skills = $request->input('skills');
+        $user = auth()->user();
+        $hasListing = JobSeekerListing::where('user_id', $user->id)->where('applysearch', 1)->exists();
+        if ($hasListing) {
+            return redirect('/listings/jobseekermanage')->with('error','You can only create 1 listing');
+        } else {
+            $skills = $request->input('skills');
         $educations = $request->input('educations');
         $formFields = $request->validate([
             'title' => 'required',
@@ -239,6 +244,8 @@ class JobSeekerController extends Controller
         $jobseekerlisting->applysearch = 1; 
         $jobseekerlisting->save();
         return redirect('/')->with('message','Listing Created');
+        }
+       
     }
 
     public function show($id){

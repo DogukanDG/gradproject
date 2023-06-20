@@ -19,7 +19,8 @@ return new class extends Migration
             $table->unsignedInteger('receiver_id')->constrained()->onDelete('cascade');
             $table->string('sender_email');
             $table->string('receiver_email');
-            $table->string('receiver_listing_id');
+            $table->unsignedInteger('receiver_listing_id');
+            $table->unsignedInteger('sender_listing_id')->nullable();
             $table->boolean('is_active')->default(true);
             $table->dateTime('expiration_date')->nullable();
             $table->string('cv')->nullable();

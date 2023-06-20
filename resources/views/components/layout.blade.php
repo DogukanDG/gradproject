@@ -194,5 +194,6 @@
     </main>
 </body>
 <x-flash-message />
+<x-error-message />
 
 </html>

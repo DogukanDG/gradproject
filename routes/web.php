@@ -1,5 +1,6 @@
 <?php
 
+use App\Admin\Controllers\ApplicationController;
 use App\Models\Offers;
 use App\Models\Listing;
 use Illuminate\Http\Request;
@@ -68,6 +69,9 @@ Route::get('/job-seekers/{jobseekerlisting}/download', [JobSeekerController::cla
 
 Route::get('/applications/{application}/download', [ApplicationsOffers::class, 'downloadcv'])->name('application.download');
 
+
+
+
 Route::put('/offers/{application}/markreadapplication', [ApplicationsOffers::class, 'markreadapplication']);
 Route::put('/applications/{offer}/markreadoffer', [ApplicationsOffers::class, 'markreadoffer']);
 
@@ -90,14 +94,18 @@ Route::get('/listings/{id}',[ListingController::class,'show']);
 Route::get('/applications',[ApplicationsOffers::class,'index1'])->middleware('auth');
 Route::get('/offers',[ApplicationsOffers::class,'index2'])->middleware('auth');
 
-Route::put('/offers/{offer}/accept',[ApplicationsOffers::class,'offeraccept'])->middleware('auth');
-Route::delete('/offers/{offer}/decline',[ApplicationsOffers::class,'offerdecline'])->middleware('auth');
+Route::put('/offers/{offer}/accept',[ApplicationsOffers::class,'offerAccept'])->middleware('auth');
+Route::delete('/offers/{offer}/decline',[ApplicationsOffers::class,'offerDecline'])->middleware('auth');
 
-Route::put('/applications/{application}/accept',[ApplicationsOffers::class,'applicationaccept'])->middleware('auth');
-Route::delete('/applications/{application}/decline',[ApplicationsOffers::class,'applicationdecline'])->middleware('auth');
+Route::put('/applications/{application}/accept',[ApplicationsOffers::class,'applicationAccept'])->middleware('auth');
+Route::delete('/applications/{application}/decline',[ApplicationsOffers::class,'applicationDecline'])->middleware('auth');
 
 Route::post('/storeoffer',[ApplicationsOffers::class,'storeoffers'],);
 Route::post('/storeapplication',[ApplicationsOffers::class,'storeapplications'],);
+
+//*Renew Application
+Route::put('/applications/{application}/renew',[ApplicationsOffers::class,'renew'])->middleware('auth');
+
 
 //*Show User Registration Page
 //*Route::get('/register', [UserController::class,'create'])->middleware('guest');

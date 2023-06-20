@@ -25,6 +25,8 @@
                 @endif
             @endforeach
         </div>
+    @elseif(!empty($userlistings))
+        <div>User Listings</div>
     @else
         <div class="content-center">
             <div class="flex">
