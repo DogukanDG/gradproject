@@ -36,66 +36,66 @@
                         @php
                             $sender = \App\Models\User::find($offer->sender_id);
                             $sender_name = $sender['name'];
+                            $descriptionId = 'description_' . $offer->id;
+                            $buttonId = 'read_more_btn_' . $offer->id;
+                            $remainingDescriptionId = 'remaining_description_' . $offer->id;
                         @endphp
                         <tbody>
-                            <tr class=" bg-white hover:bg-gray-50 ">
-                                <th scope="row" class="px-2 font-medium text-gray-900 whitespace-nowrap">
-                                    {{ $offer['company_name'] }}
-                                </th>
-                                <td class="">
-                                    {{ $offer['sender_email'] }}
-                                </td>
-                                <td class="">
-                                    {{ $offer['phone_number'] }}
-                                </td>
-                                <td class=" ">
-                                    {{ $offer['created_at']->format('Y-m-d') }}
-                                </td>
-                                <td class="px-12 py-3">
-                                    <div>
-                                        <p class="overflow-hidden max-w-md mt-5 break-words transition-all duration-500 text-base leading-normal text-gray-800 truncate"
-                                            id="description">
-                                            {{ \Illuminate\Support\Str::words($offer['description'], 50) }}
-                                        </p>
-                                        <button class="text-blue-500 font-bold mt-2" id="read-more-btn">Read
-                                            More</button>
-                                        <p class="hidden" id="remaining-description">{{ $offer['description'] }}
-                                        </p>
-                                    </div>
-                                </td>
-                                <script src="{{ asset('app.js') }}"></script>
-                                <script>
-                                    function toggleDescription() {
-                                        var description = document.getElementById('description');
-                                        var remainingDescription = document.getElementById('remaining-description');
-                                        var readMoreBtn = document.getElementById('read-more-btn');
+                            <th scope="row" class="px-2 font-medium text-gray-900 whitespace-nowrap">
+                                {{ $offer['company_name'] }}
+                            </th>
+                            <td class="">
+                                {{ $offer['sender_email'] }}
+                            </td>
+                            <td class="">
+                                {{ $offer['phone_number'] }}
+                            </td>
+                            <td class=" ">
+                                {{ $offer['created_at']->format('Y-m-d') }}
+                            </td>
+                            <td class="px-12 py-3">
+                                <div>
+                                    <p class="overflow-hidden max-w-md mt-5 break-words transition-all duration-500 text-base leading-normal text-gray-800 truncate"
+                                        id="{{ $descriptionId }}">
+                                        {{ \Illuminate\Support\Str::words($offer['description'], 50) }}
+                                    </p>
+                                    <button class="text-blue-500 font-bold mt-2" id="{{ $buttonId }}"
+                                        onclick="toggleDescription('{{ $descriptionId }}', '{{ $remainingDescriptionId }}', '{{ $buttonId }}')">Read
+                                        More</button>
+                                    <p class="hidden" id="{{ $remainingDescriptionId }}">{{ $offer['description'] }}
+                                    </p>
+                                </div>
+                            </td>
+                            <script>
+                                function toggleDescription(descriptionId, remainingDescriptionId, buttonId) {
+                                    var description = document.getElementById(descriptionId);
+                                    var remainingDescription = document.getElementById(remainingDescriptionId);
+                                    var readMoreBtn = document.getElementById(buttonId);
 
-                                        if (description.classList.contains('truncate')) {
-                                            description.textContent = remainingDescription.textContent;
-                                            description.classList.remove('truncate');
-                                            readMoreBtn.textContent = 'Read Less';
-                                        } else {
-                                            description.textContent = truncateDescription(remainingDescription.textContent);
-                                            description.classList.add('truncate');
-                                            readMoreBtn.textContent = 'Read More';
-                                        }
+                                    if (description.classList.contains('truncate')) {
+                                        description.textContent = remainingDescription.textContent;
+                                        description.classList.remove('truncate');
+                                        readMoreBtn.textContent = 'Read Less';
+                                    } else {
+                                        description.textContent = truncateDescription(remainingDescription.textContent, 50);
+                                        description.classList.add('truncate');
+                                        readMoreBtn.textContent = 'Read More';
+                                    }
+                                }
+
+                                function truncateDescription(description, words) {
+                                    var wordArray = description.trim().split(' ');
+                                    var truncatedArray = wordArray.slice(0, words);
+                                    var truncatedDescription = truncatedArray.join(' ');
+
+                                    if (wordArray.length > words) {
+                                        truncatedDescription += '...';
                                     }
 
-                                    function truncateDescription(description, words) {
-                                        var wordArray = description.trim().split(' ');
-                                        var truncatedArray = wordArray.slice(0, words);
-                                        var truncatedDescription = truncatedArray.join(' ');
-
-                                        if (wordArray.length > words) {
-                                            truncatedDescription += '...';
-                                        }
-
-                                        return truncatedDescription;
-                                    }
-
-                                    document.getElementById('read-more-btn').addEventListener('click', toggleDescription);
-                                </script>
-                                {{-- <td class="px-6 py-4">
+                                    return truncatedDescription;
+                                }
+                            </script>
+                            {{-- <td class="px-6 py-4">
                                     @php
                                         $findlisting = App\Models\JobSeekerListing::find();
                                     @endphp
@@ -104,22 +104,22 @@
                                         {{ $findlisting['title'] }}
                                     </a>
                                 </td> --}}
-                                <td class="">
-                                    <div class="flex flex-col">
-                                        <form method="POST" action="/offers/{{ $offer['id'] }}/accept"
-                                            class="w-20 bg-green-500 text-white font-medium py-2 px-4 rounded-md mb-2 hover:bg-green-600 text-center">
-                                            @csrf
-                                            @method ('PUT')
-                                            <button class="">Accept</button>
-                                        </form>
-                                        <form method="POST" action="/offers/{{ $offer['id'] }}/decline"
-                                            class="w-20 bg-red-500 text-white font-medium py-2 px-4 rounded-md hover:bg-red-600 text-center">
-                                            @csrf
-                                            @method ('DELETE')
-                                            <button class="">Decline</button>
-                                        </form>
-                                    </div>
-                                </td>
+                            <td class="">
+                                <div class="flex flex-col">
+                                    <form method="POST" action="/offers/{{ $offer['id'] }}/accept"
+                                        class="w-20 bg-green-500 text-white font-medium py-2 px-4 rounded-md mb-2 hover:bg-green-600 text-center">
+                                        @csrf
+                                        @method ('PUT')
+                                        <button class="">Accept</button>
+                                    </form>
+                                    <form method="POST" action="/offers/{{ $offer['id'] }}/decline"
+                                        class="w-20 bg-red-500 text-white font-medium py-2 px-4 rounded-md hover:bg-red-600 text-center">
+                                        @csrf
+                                        @method ('DELETE')
+                                        <button class="">Decline</button>
+                                    </form>
+                                </div>
+                            </td>
 
                             </tr>
                         </tbody>

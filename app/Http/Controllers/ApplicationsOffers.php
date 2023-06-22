@@ -44,11 +44,11 @@ class ApplicationsOffers extends Controller
     $user = User::findOrFail($formFields['receiver_id']);
 
     $existingOffer = Offers::where('sender_id', auth()->id())
-        ->where('receiver_listing_id', $request->input('listing_id'))
+        ->where('receiver_listing_id', $request->input('listing_id'))->where('is_active',true)
         ->first();
 
     if ($existingOffer) {
-        return redirect('/')->with('error', 'You have already sent an offer for this listing');
+        return back()->with('error', 'You have already sent an offer for this listing !');
     }
 
     $formFields['receiver_email'] = $user->email;

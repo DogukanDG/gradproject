@@ -113,7 +113,7 @@ class JobSeekerController extends Controller
     $user = auth()->user();
     if (!$user) {
         return view('listings.jobseekerindex', [
-            'jobseekerlistings' => JobSeekerListing::latest()->filter(request(['skills', 'search']))->simplePaginate(6),
+            'jobseekerlistings' => JobSeekerListing::latest()->filter(request(['skills', 'search']))->simplePaginate(100),
             'sortedlisting' => []
         ]);
     }
@@ -169,13 +169,13 @@ class JobSeekerController extends Controller
             ]);
         } else {
             return view('listings.jobseekerindex', [
-                'jobseekerlistings' => JobSeekerListing::latest()->filter(request(['skills', 'search']))->simplePaginate(6),
+                'jobseekerlistings' => JobSeekerListing::latest()->filter(request(['skills', 'search']))->simplePaginate(100),
                 'sortedlisting' => []
             ]);
         }
     } else {
         return view('listings.jobseekerindex', [
-            'jobseekerlistings' => JobSeekerListing::latest()->filter(request(['skills', 'search']))->simplePaginate(6),
+            'jobseekerlistings' => JobSeekerListing::latest()->filter(request(['skills', 'search']))->simplePaginate(100),
             'sortedlisting' => []
         ]);
     }

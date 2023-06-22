@@ -65,7 +65,7 @@
                 <section>
 
                     <h2 class="pb-1 text-2xl font-semibold border-b">Information About Me</h2>
-                    <p class="mt-4 text-xs">{{ $description }} </p>
+                    <p style="width:100%;word-break:break-word; class="mt-4 text-xs">{{ $description }} </p>
 
                 </section>
                 <section>

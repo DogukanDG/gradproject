@@ -299,10 +299,15 @@
         @php
             $tags = json_decode($listing['skills']);
         @endphp
-        @foreach ($tags as $tag)
-            <span style="background-color: rgb(1, 149, 255);"
-                class="uppercase text-white font-bold hover:shadow-md shadow text-xs px-3 py-1 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">{{ $tag }}</span>
-        @endforeach
+        <div class="inline-block">
+            <div class="inline-block">
+                @foreach ($tags as $tag)
+                    <span style="background-color: rgb(1, 149, 255);"
+                        class="uppercase text-white font-bold hover:shadow-md shadow text-xs px-3 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 duration-150 inline-block">{{ $tag }}</span>
+                @endforeach
+            </div>
+        </div>
+
         <div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 ">
             <p class="mt-4 mr-2 text-lg text-blueGray-400">Number Of People To Be Recruited:
                 {{ $listing->person_need }}

@@ -197,7 +197,7 @@
             <div></div>
         @endif
     </div> --}}
-    <div class="flex flex-wrap justify-center">
+    <div class="flex flex-wrap justify-center mt-10">
         <div class="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
             <div class="py-6 px-3 mt-32 sm:mt-0">
                 <a href="mailto:{{ $jobseekerlisting['email'] }}"style="background-color: blue;"
@@ -206,6 +206,18 @@
                     Contact Job-Seeker
                 </a>
                 @if ($user)
+                    @php
+                        $user = auth()->user();
+                        $hasListing = App\Models\Listing::where('user_id', $user->id)
+                            ->where('applysearch', 1)
+                            ->exists();
+                    @endphp
+                    @if ($hasListing)
+                        <button type="button"
+                            class="openModal bg-green-400 active:bg-green-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">Send
+                            Offer
+                        </button>
+                    @endif
                     @if ($user->role == 'employer')
                         @if ($jobseekerlisting->cv != null)
                             <a href="{{ route('jobseeker.download', ['jobseekerlisting' => $jobseekerlisting]) }}",
@@ -213,10 +225,7 @@
                                     class="fa-solid fa-download"></i>
                                 Download CV</a>
                         @endif
-                        <button type="button"
-                            class="openModal bg-green-400 active:bg-green-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">Send
-                            Offer
-                        </button>
+
                         <div class="fixed z-10 inset-0 invisible overflow-y-auto" aria-labelledby="modal-title"
                             role="dialog" aria-modal="true" id="interestModal">
                             <div
@@ -346,10 +355,14 @@
             $tags = json_decode($jobseekerlisting['skills']);
             $educations = json_decode($jobseekerlisting['educations']);
         @endphp
-        @foreach ($tags as $tag)
-            <span style="background-color: blue;"
-                class="uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">{{ $tag }}</span>
-        @endforeach
+        <div class="inline-block">
+            <div class="inline-block">
+                @foreach ($tags as $tag)
+                    <span style="background-color: rgb(1, 149, 255);"
+                        class="uppercase text-white font-bold hover:shadow-md shadow text-xs px-3 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 duration-150 inline-block">{{ $tag }}</span>
+                @endforeach
+            </div>
+        </div>
         <h5 class="mt-4 text-xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">Education </h5>
         @foreach ($educations as $education)
             <ul class="flex justify-center">

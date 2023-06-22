@@ -41,10 +41,13 @@
                                 $sender = \App\Models\User::find($application->sender_id);
                                 $sender_name = $sender['name'];
                                 $findAllListing = \App\Models\JobSeekerListing::where('user_id', $application->sender_id)->get();
+                                $descriptionId = 'description_' . $application->id;
+                                $buttonId = 'read_more_btn_' . $application->id;
+                                $remainingDescriptionId = 'remaining_description_' . $application->id;
                             @endphp
 
                             <tr class="bg-white hover:bg-gray-50 ">
-                                <th scope="row" class=" font-medium text-gray-900 whitespace-nowrap">
+                                <th scope="row" class="font-medium text-gray-900 whitespace-nowrap">
                                     <a>{{ $sender_name }} {{ $sender->last_name }}</a>
                                 </th>
                                 <td class="">
@@ -53,36 +56,36 @@
                                 <td class="">
                                     {{ $application['phone_number'] }}
                                 </td>
-
                                 <td class="">
                                     {{ Carbon\Carbon::parse($application['expiration_date'])->format('Y-m-d') }}
                                 </td>
-                                <td class="px-12  py-3">
+                                <td class="px-12 py-3">
                                     <div>
                                         <p class="overflow-hidden max-w-md mt-5 break-words transition-all duration-500 text-base leading-normal text-gray-800 truncate"
-                                            id="description">
+                                            id="{{ $descriptionId }}">
                                             {{ \Illuminate\Support\Str::words($application['description'], 50) }}
                                         </p>
-                                        <button class="text-blue-500 font-bold mt-2" id="read-more-btn">Read
+                                        <button class="text-blue-500 font-bold mt-2" id="{{ $buttonId }}"
+                                            onclick="toggleDescription('{{ $descriptionId }}', '{{ $remainingDescriptionId }}', '{{ $buttonId }}')">Read
                                             More</button>
-                                        <p class="hidden" id="remaining-description">{{ $application['description'] }}
-                                        </p>
+                                        <p class="hidden" id="{{ $remainingDescriptionId }}">
+                                            {{ $application['description'] }}</p>
                                     </div>
                                 </td>
 
                                 <script src="{{ asset('app.js') }}"></script>
                                 <script>
-                                    function toggleDescription() {
-                                        var description = document.getElementById('description');
-                                        var remainingDescription = document.getElementById('remaining-description');
-                                        var readMoreBtn = document.getElementById('read-more-btn');
+                                    function toggleDescription(descriptionId, remainingDescriptionId, buttonId) {
+                                        var description = document.getElementById(descriptionId);
+                                        var remainingDescription = document.getElementById(remainingDescriptionId);
+                                        var readMoreBtn = document.getElementById(buttonId);
 
                                         if (description.classList.contains('truncate')) {
                                             description.textContent = remainingDescription.textContent;
                                             description.classList.remove('truncate');
                                             readMoreBtn.textContent = 'Read Less';
                                         } else {
-                                            description.textContent = truncateDescription(remainingDescription.textContent);
+                                            description.textContent = truncateDescription(remainingDescription.textContent, 50);
                                             description.classList.add('truncate');
                                             readMoreBtn.textContent = 'Read More';
                                         }
@@ -99,8 +102,6 @@
 
                                         return truncatedDescription;
                                     }
-
-                                    document.getElementById('read-more-btn').addEventListener('click', toggleDescription);
                                 </script>
                                 <td class="
                                  py-4">
