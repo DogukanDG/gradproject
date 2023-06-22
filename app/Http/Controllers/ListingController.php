@@ -145,7 +145,9 @@ class ListingController extends Controller
     //show single listing
     public function show($id){
         $listing = Listing::find($id);
-
+        if($listing->user_id != auth()->id()){
+            abort(403,'Unauthorized Action');
+       }
     if ($listing) {
         
         return view('listings.show', [
@@ -194,15 +196,17 @@ class ListingController extends Controller
         return redirect('/')->with('message','Listing Created');
     }
     public function edit(Listing $listing){
-        
+        if($listing->user_id != auth()->id()){
+            abort(403,'Unauthorized Action');
+       }
         return view('listings.edit',['listing'=>$listing]);
         
     }
     
     public function update(Request $request,Listing $listing){
-        // if($listing->user_id != auth()->id()){
-        //     abort(403,'Unauthorized Action');
-        // }
+         if($listing->user_id != auth()->id()){
+             abort(403,'Unauthorized Action');
+        }
         $skills = $request->input('skills');
         $formFields = $request->validate([
             'title' => 'required',        
@@ -228,6 +232,9 @@ class ListingController extends Controller
         
         public function applysearch(Listing $listing)
         {
+            if($listing->user_id != auth()->id()){
+                abort(403,'Unauthorized Action');
+           }
             $userId = auth()->user()->id;
         // Set applysearch = 1 for the specified listing
          $listing->applysearch = 1;
@@ -243,9 +250,9 @@ class ListingController extends Controller
         
         //Delete Listing
         public function delete(Listing $listing){
-            // if($listing->user_id != auth()->id()){
-            //     abort(403,'Unauthorized Action');
-            // }
+             if($listing->user_id != auth()->id()){
+                 abort(403,'Unauthorized Action');
+            }
             $isApplySearchOne = $listing->applysearch == 1;
             $listing->delete();
             
@@ -262,6 +269,9 @@ class ListingController extends Controller
             
         }
         public function renew(Listing $listing){
+            if($listing->user_id != auth()->id()){
+                abort(403,'Unauthorized Action');
+           }
             $listing->update(['expiration_date'=>now()->addDays(60)]);
             return redirect()->back()->with('message','Listing Renewed!');
          }

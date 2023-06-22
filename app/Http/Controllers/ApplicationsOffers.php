@@ -102,6 +102,9 @@ class ApplicationsOffers extends Controller
 
     public function offerAccept(Offers $offer)
     {
+        if($offer->receiver_id != auth()->id()){
+            abort(403,'Unauthorized Action');
+       }
         $offerfind = Offers::findOrFail($offer['id']);
         $jobSeekerListing = JobSeekerListing::findOrFail($offerfind['receiver_listing_id']);
         $employeeListing = $employeeListing = Listing::where('id', $offerfind['sender_listing_id'])->first();
@@ -130,6 +133,9 @@ class ApplicationsOffers extends Controller
 
     public function offerDecline(Offers $offer)
     {
+        if($offer->receiver_id != auth()->id()){
+            abort(403,'Unauthorized Action');
+       }
         $offerfind = Offers::findOrFail($offer['id']);
         $offerfind->status = 'Declined';
         $offerfind->is_active = false;
@@ -157,12 +163,16 @@ class ApplicationsOffers extends Controller
 
     public function downloadcv(Applications $application)
     {
+        
         return response()->download(public_path('storage/' . $application['cv']));
     }
 
 
     public function applicationAccept(Applications $application)
     {
+        if($application->receiver_id != auth()->id()){
+            abort(403,'Unauthorized Action');
+       }
         $applicationfind = Applications::findOrFail($application['id']);
         $jobSeekerListing = JobSeekerListing::where('user_id', $applicationfind['sender_id'])
             ->where('applysearch', 1)
@@ -198,6 +208,9 @@ class ApplicationsOffers extends Controller
 
     public function applicationDecline(Applications $application)
     {
+        if($application->receiver_id != auth()->id()){
+            abort(403,'Unauthorized Action');
+       }
         $applicationfind = Applications::findOrFail($application['id']);
         $applicationfind->status = 'Declined';
         $applicationfind->is_active = false;
