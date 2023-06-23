@@ -6,7 +6,7 @@
                     <h2 class="text-2xl font-bold uppercase mb-1">
                         Create a Listing
                     </h2>
-                    <p class="mb-4">Post a listing to find a developer</p>
+                    <p class="mb-4">Post a listing to find a employee </p>
                 </header>
 
                 <form method="POST" action="/listings" enctype="multipart/form-data">
@@ -15,7 +15,7 @@
 
                         <label for="name" class="inline-block text-lg mb-2">Company Name</label>
                         <input type="text" class="border border-gray-200 rounded p-2 w-full" name="name"
-                            value="{{ old('name') }}" />
+                            placeholder="Example: Amazon" value="{{ old('name') }}" />
                         @error('name')
                             <p class='text-red-500 text-xs mt-0.5'>{{ $message }}</p>
                         @enderror
@@ -42,7 +42,7 @@
                     <div class="mb-6">
                         <label for="email" class="inline-block text-lg mb-2">Contact Email</label>
                         <input type="text" class="border border-gray-200 rounded p-2 w-full" name="email"
-                            value="{{ old('email') }}" />
+                            placeholder="example@gmail.com" value="{{ old('email') }}" />
                         @error('email')
                             <p class='text-red-500 text-xs mt-1'>{{ $message }}</p>
                         @enderror
@@ -52,7 +52,7 @@
                         <label for="person_need" class="inline-block text-lg mb-2">Number Of Personnel To Be
                             Recruited</label>
                         <input type="text" class="border border-gray-200 rounded p-2 w-full" name="person_need"
-                            value="{{ old('person_need') }}" />
+                            placeholder="Smaller Then 10" value="{{ old('person_need') }}" />
                         @error('person_need')
                             <p class='text-red-500 text-xs mt-1'>{{ $message }}</p>
                         @enderror
@@ -111,7 +111,8 @@
                                         <option value="Data management and analysis">Data management and analysis
                                         </option>
                                         <option value="Data mining">Data mining</option>
-                                        <option value="Data privacy and compliance">Data privacy and compliance</option>
+                                        <option value="Data privacy and compliance">Data privacy and compliance
+                                        </option>
                                         <option value="Data science">Data science</option>
                                         <option value="Data storytelling">Data storytelling</option>
                                         <option value="Data validation">Data validation</option>

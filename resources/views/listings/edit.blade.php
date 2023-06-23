@@ -10,7 +10,7 @@
                 </header>
 
                 <form method="POST" action="/listings/{{ $listing['id'] }}" enctype="multipart/form-data">
-                    @csrf {{-- This is for preventing people from submiting a form from their website to yours --}}
+                    @csrf
                     @php
                         
                     @endphp

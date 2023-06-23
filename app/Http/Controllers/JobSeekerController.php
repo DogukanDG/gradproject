@@ -251,9 +251,7 @@ class JobSeekerController extends Controller
 
     public function show($id){
         $jobseekerlisting = JobSeekerListing::find($id);
-        if($jobseekerlisting->user_id != auth()->id()){
-            abort(403,'Unauthorized Action');
-       }
+    
         if ($jobseekerlisting) {
             return view('listings.jobseekershow', [
                 'jobseekerlisting' => $jobseekerlisting

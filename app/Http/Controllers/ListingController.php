@@ -145,9 +145,6 @@ class ListingController extends Controller
     //show single listing
     public function show($id){
         $listing = Listing::find($id);
-        if($listing->user_id != auth()->id()){
-            abort(403,'Unauthorized Action');
-       }
     if ($listing) {
         
         return view('listings.show', [
@@ -169,7 +166,7 @@ class ListingController extends Controller
         $skills = $request->input('skills');
         $formFields = $request->validate([
             'title' => 'required',
-            'name' => ['required', Rule::unique('listings', 'name')],
+            'name' => ['required',],
             'location' => 'required',
             'email' => ['required', 'email'],
             'description' => 'required',
