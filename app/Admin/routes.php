@@ -15,8 +15,12 @@ Route::group([
 
     $router->get('/', 'HomeController@index')->name('home');
     $router->resource('users', UserController::class);
+    //$router->resource('listings', ListingController::class);
+    // $router->resource('job-seeker-listings', JobSeekerController::class);
     $router->resource('listings', ListingController::class);
-    $router->resource('job-seeker-listings', JobSeekerController::class);
+    $router->resource('job-seeker-listings', JobSeekerListingController::class);
+    //$router->resource('offers', OffersController::class);
+    //$router->resource('applications', ApplicationController::class);
     $router->resource('offers', OffersController::class);
-    $router->resource('applications', ApplicationController::class);
+    $router->resource('applications', ApplicationsController::class);
 });

@@ -8,7 +8,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 
-class JobSeekerController extends AdminController
+class JobSeekerListingController extends AdminController
 {
     /**
      * Title for current resource.

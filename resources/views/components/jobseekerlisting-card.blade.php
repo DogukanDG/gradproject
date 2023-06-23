@@ -38,7 +38,7 @@
             {{ Illuminate\Support\Str::limit($jobseekerlisting['description'], $limit = 75, $end = '...') }}
         </p>
         <div class="relative">
-            <p class="absolute bottom-0 right-0 text-gray-600 mt-2">
+            <p class="absolute bottom-0 right-0 z-10 text-gray-600 mt-2">
                 <i class="fa-solid fa-clock-dot"></i>
                 Posted {{ \Carbon\Carbon::parse($jobseekerlisting['created_at'])->diffForHumans() }}
             </p>

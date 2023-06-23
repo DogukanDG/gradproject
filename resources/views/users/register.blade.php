@@ -1,4 +1,10 @@
  <x-layout>
+     <style>
+         #phone {
+             width: 320px;
+             /* Replace with your desired width */
+         }
+     </style>
      <section class="bg-white ">
          <div class="flex justify-center min-h-screen">
              <div class="hidden bg-cover lg:block lg:w-2/5"

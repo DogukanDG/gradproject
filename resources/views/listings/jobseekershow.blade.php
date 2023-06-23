@@ -197,15 +197,30 @@
             <div></div>
         @endif
     </div> --}}
-    <div class="flex flex-wrap justify-center">
+    <div class="flex flex-wrap justify-center mt-10">
         <div class="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
             <div class="py-6 px-3 mt-32 sm:mt-0">
-                <a href="mailto:{{ $jobseekerlisting['email'] }}"style="background-color: blue;"
-                    class="bg-green-400 active:bg-green-600  uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
-                    type="button">
-                    Contact Job-Seeker
-                </a>
+                @php
+                    $user = auth()->user();
+                    $hasListing = App\Models\Listing::where('user_id', $user->id)
+                        ->where('applysearch', 1)
+                        ->exists();
+                @endphp
+                @if ($jobseekerlisting['user_id'] != $user->id)
+                    <a href="mailto:{{ $jobseekerlisting['email'] }}"style="background-color: blue;"
+                        class="bg-green-400 active:bg-green-600  uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
+                        type="button">
+                        Contact Job-Seeker
+                    </a>
+                @endif
                 @if ($user)
+
+                    @if ($hasListing)
+                        <button type="button"
+                            class="openModal bg-green-400 active:bg-green-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">Send
+                            Offer
+                        </button>
+                    @endif
                     @if ($user->role == 'employer')
                         @if ($jobseekerlisting->cv != null)
                             <a href="{{ route('jobseeker.download', ['jobseekerlisting' => $jobseekerlisting]) }}",
@@ -213,10 +228,7 @@
                                     class="fa-solid fa-download"></i>
                                 Download CV</a>
                         @endif
-                        <button type="button"
-                            class="openModal bg-green-400 active:bg-green-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">Send
-                            Offer
-                        </button>
+
                         <div class="fixed z-10 inset-0 invisible overflow-y-auto" aria-labelledby="modal-title"
                             role="dialog" aria-modal="true" id="interestModal">
                             <div
@@ -255,6 +267,26 @@
                                                             <input type="text"
                                                                 class="border border-gray-200 rounded p-2 w-full"
                                                                 name="phone_number" placeholder="+90 --- --- ----" />
+
+                                                        </div>
+                                                        <div class="mb-6">
+                                                            <label for="sender_listing_id"
+                                                                class="inline-block text-lg mb-2">Select a Listing
+                                                                for
+                                                                System Evaluation
+                                                            </label>
+                                                            @php
+                                                                $userListings = \App\Models\Listing::where('user_id', auth()->user()->id)
+                                                                    ->where('is_active', 1)
+                                                                    ->get();
+                                                            @endphp
+                                                            <select class="border border-gray-200 rounded p-2 w-full"
+                                                                name="sender_listing_id">
+                                                                @foreach ($userListings as $listing)
+                                                                    <option value="{{ $listing->id }}">
+                                                                        {{ $listing->title }}</option>
+                                                                @endforeach
+                                                            </select>
 
                                                         </div>
                                                         <div class="mb-6">
@@ -313,7 +345,7 @@
                 alt="" />
         </div> --}}
         <h3 class="text-4xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">
-            {{ $jobseekerlisting->name }}
+            {{ $jobseekerlisting->name }} {{ $jobseekerlisting->last_name }}
         </h3>
 
         <h5 class="text-xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2"> {{ $jobseekerlisting->title }}
@@ -322,15 +354,19 @@
             <i class="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>
             {{ $jobseekerlisting->location }}
         </div>
-        <h5 class="text-xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2"> Required Skills</h5>
+        <h5 class="text-xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">Skills</h5>
         @php
             $tags = json_decode($jobseekerlisting['skills']);
             $educations = json_decode($jobseekerlisting['educations']);
         @endphp
-        @foreach ($tags as $tag)
-            <span style="background-color: blue;"
-                class="uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">{{ $tag }}</span>
-        @endforeach
+        <div class="inline-block">
+            <div class="inline-block">
+                @foreach ($tags as $tag)
+                    <span style="background-color: rgb(1, 149, 255);"
+                        class="uppercase text-white font-bold hover:shadow-md shadow text-xs px-3 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 duration-150 inline-block">{{ $tag }}</span>
+                @endforeach
+            </div>
+        </div>
         <h5 class="mt-4 text-xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">Education </h5>
         @foreach ($educations as $education)
             <ul class="flex justify-center">
@@ -343,10 +379,11 @@
     </div>
 
 
-    <div class="mt-10 py-10 border-t border-blueGray-200 text-center">
-        <div class="flex flex-wrap justify-center">
-            <div class="w-full lg:w-9/12 px-4">
-                <p class="mb-4 text-lg leading-relaxed text-blueGray-700">
+    <div class="mt-10 py-10 border-t border-blueGray-200">
+        <div>
+            <div class="mx-auto w-full lg:w-9/12 px-4">
+                <p style="width:100%;word-break:break-word;"
+                    class="mb-4 text-lg leading-relaxed text-blueGray-700 text-center">
                     {{ $jobseekerlisting->description }}
 
                 </p>
