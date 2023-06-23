@@ -152,7 +152,7 @@ Route::get('/newregister', function () {
 
 Route::get('/verify', function () {
     return view('components.verify');
-})->name('verify');
+ })->name('verifypage');
 
 
 Route::post('/kayit', [AuthController::class,'create'])->name('kayit');

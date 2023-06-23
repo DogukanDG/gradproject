@@ -206,6 +206,7 @@ class JobSeekerController extends Controller
 
     }
     public function store(Request $request){
+        
         $user = auth()->user();
         $hasListing = JobSeekerListing::where('user_id', $user->id)->where('applysearch', 1)->exists();
         if ($hasListing) {
@@ -250,7 +251,7 @@ class JobSeekerController extends Controller
 
     public function show($id){
         $jobseekerlisting = JobSeekerListing::find($id);
-
+    
         if ($jobseekerlisting) {
             return view('listings.jobseekershow', [
                 'jobseekerlisting' => $jobseekerlisting
@@ -266,6 +267,9 @@ class JobSeekerController extends Controller
     
     public function update(Request $request,JobSeekerListing $jobseekerlisting){
         //dd($request->all(),$listing);
+        if($jobseekerlisting->user_id != auth()->id()){
+            abort(403,'Unauthorized Action');
+       }
         $skills = $request->input('skills');
         $educations = $request->input('educations');
         $formFields = $request->validate([
@@ -293,15 +297,18 @@ class JobSeekerController extends Controller
     
     
     public function downloadcv(JobSeekerListing $jobseekerlisting)
-    {   
+    {  
+        if($jobseekerlisting->user_id != auth()->id()){
+            abort(403,'Unauthorized Action');
+       }
        return response()->download(public_path('storage/'. $jobseekerlisting['cv']));
    }
 
     
     public function delete(JobSeekerListing $jobseekerlisting){
-         if($jobseekerlisting->user_id != auth()->id()){
+        if($jobseekerlisting->user_id != auth()->id()){
             abort(403,'Unauthorized Action');
-         }
+       }
          
         $isApplySearchOne = $jobseekerlisting->applysearch == 1;
         $jobseekerlisting->delete();
@@ -318,6 +325,9 @@ class JobSeekerController extends Controller
         return redirect('')->with('message','Listing Deleted Successfully');
     }
     public function renew(JobSeekerListing $jobseekerlisting){
+        if($jobseekerlisting->user_id != auth()->id()){
+            abort(403,'Unauthorized Action');
+       }
         $jobseekerlisting->update(['expiration_date'=>now()->addDays(60)]);
         return redirect()->back()->with('message','Listing Renewed!');
      }

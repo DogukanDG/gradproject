@@ -9,6 +9,7 @@ use App\Models\User;
 
 
 
+
 use Twilio\Rest\Client;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -33,18 +34,18 @@ class AuthController extends Controller
         ]);
         //Laravel function to encrypt the message
         /* Get credentials from .env */
-            $token = getenv("TWILIO_AUTH_TOKEN");
-            $twilio_sid = getenv("TWILIO_SID");
-            $twilio_verify_sid = getenv("TWILIO_VERIFY_SID");
-            $twilio = new Client($twilio_sid, $token);
-            $twilio->verify->v2->services($twilio_verify_sid)
-             ->verifications
-            ->create($data['phone'], "sms");
+             $token = getenv("TWILIO_AUTH_TOKEN");
+             $twilio_sid = getenv("TWILIO_ACCOUNT_SID");
+             $twilio_verify_sid = getenv("TWILIO_VERIFY_SID");
+             $twilio = new Client($twilio_sid, $token);
+             $twilio->verify->v2->services($twilio_verify_sid)
+              ->verifications
+             ->create($data['phone'], "sms");
         
         // User::create($data);
         // //return redirect()->route('verify')->with(['phone'=>$this->data['phone']]);
         Session::put('userInfo', $data);
-        return redirect()->route('verify')->with(['userInfo'=>$data]);
+        return redirect()->route('verifypage')->with(['userInfo'=>$data]);
     }
     protected function verify(Request $request)
     {

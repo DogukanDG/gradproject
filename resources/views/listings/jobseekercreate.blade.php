@@ -6,7 +6,7 @@
                     <h2 class="text-2xl font-bold uppercase mb-1">
                         Create a Listing
                     </h2>
-                    <p class="mb-4">Post a listing to find a developer</p>
+                    <p class="mb-4">Post a listing to find a job</p>
                 </header>
 
                 <form method="POST" action="/jobseekerlistings" enctype="multipart/form-data">
@@ -23,7 +23,7 @@
                     </div>
                     <div class="mb-6">
                         <label for="location" class="inline-block text-lg mb-2">Location</label>
-                        <input placeholder="Example:Boston MA, etc" type="text"
+                        <input placeholder="Example:Cyprus, Remote etc" type="text"
                             class="border border-gray-200 rounded p-2 w-full" name="location"
                             value="{{ old('location') }}" />
                         @error('location')
